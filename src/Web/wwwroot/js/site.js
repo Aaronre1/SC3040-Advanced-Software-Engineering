@@ -3,3 +3,7 @@
 
 // Write your JavaScript code.
 
+function test() {
+    console.log('test');
+}
+test();
