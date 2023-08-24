@@ -9,11 +9,25 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 <div>Hello World !</div>
-<div class="mb-3">
-    <label for="exampleFormControlInput1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-</div>
-<div class="mb-3">
-    <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Note</th>
+            <th scope="col">Done</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ToDoItems)
+        {
+            <tr>
+                <th scope="row">@Html.DisplayFor(i => item.Id)</th>
+                <td>@Html.DisplayFor(i => item.Title)</td>
+                <td>@Html.DisplayFor(i => item.Note)</td>
+                <td>@Html.DisplayFor(i => item.Done)</td>
+            </tr>
+        }
+    </tbody>
+</table>

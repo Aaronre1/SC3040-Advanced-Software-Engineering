@@ -1,0 +1,80 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/aaronyong/Projects/Repositories/ASE3040/Application.FunctionalTests/Application.FunctionalTests.csproj": {}
+  },
+  "projects": {
+    "/Users/aaronyong/Projects/Repositories/ASE3040/Application.FunctionalTests/Application.FunctionalTests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/aaronyong/Projects/Repositories/ASE3040/Application.FunctionalTests/Application.FunctionalTests.csproj",
+        "projectName": "Application.FunctionalTests",
+        "projectPath": "/Users/aaronyong/Projects/Repositories/ASE3040/Application.FunctionalTests/Application.FunctionalTests.csproj",
+        "packagesPath": "/Users/aaronyong/.nuget/packages/",
+        "outputPath": "/Users/aaronyong/Projects/Repositories/ASE3040/Application.FunctionalTests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/aaronyong/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.8, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.8, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.1.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.307/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
