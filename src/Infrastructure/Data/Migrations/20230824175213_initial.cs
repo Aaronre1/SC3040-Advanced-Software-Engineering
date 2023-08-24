@@ -14,12 +14,12 @@ namespace ASE3040.Infrastructure.Data.Migrations
                 name: "ToDoItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ListId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    Note = table.Column<string>(type: "TEXT", nullable: true),
-                    Done = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ListId = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Done = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

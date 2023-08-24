@@ -18,8 +18,9 @@ namespace ASE3040.Infrastructure
 			{
 				if (environment.IsDevelopment())
 				{
-                    options.UseSqlite(connectionString);
-				}
+                    //options.UseSqlite(connectionString);
+                    options.UseSqlServer(connectionString);
+                }
 				else
 				{
 					options.UseSqlServer(connectionString);
