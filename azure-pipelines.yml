@@ -42,5 +42,5 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
    command: custom
-   arguments: 'dotnet ef migrations bundle --project src/Infrastructure --startup-project src/Web'
+   custom: 'dotnet ef migrations bundle --project src/Infrastructure --startup-project src/Web'
     
