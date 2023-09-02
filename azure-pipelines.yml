@@ -38,3 +38,9 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+- task: DotNetCoreCLI@2
+  inputs:
+   command: run
+   arguments: 'dotnet ef migrations bundle --project src/Infrastructure --startup-project src/Web'
+    
