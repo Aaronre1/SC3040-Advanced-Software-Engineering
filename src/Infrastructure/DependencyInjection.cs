@@ -13,17 +13,18 @@ namespace ASE3040.Infrastructure
 		public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
 		{
 			var connectionString = configuration.GetConnectionString("DefaultConnection");
+			var provider = configuration.GetValue("Provider", "SqlServer");
 
 			services.AddDbContext<ApplicationDbContext>((sp, options) =>
 			{
-				if (environment.IsDevelopment())
+				switch (provider)
 				{
-                    //options.UseSqlite(connectionString);
-                    options.UseSqlServer(connectionString);
-                }
-				else
-				{
-					options.UseSqlServer(connectionString);
+					case "Sqlite": options.UseSqlite(connectionString);
+						break;
+					case "SqlServer": options.UseSqlServer(connectionString);
+						break;
+					default:
+						throw new Exception($"Unsupported provider: {provider}");
 				}
             });
 

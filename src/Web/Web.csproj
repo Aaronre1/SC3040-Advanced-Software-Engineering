@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>ASE3040.Web</RootNamespace>
+    <UserSecretsId>64b11916-7c29-4515-a7fc-30000b2469fd</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
