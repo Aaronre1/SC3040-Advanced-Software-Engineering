@@ -31,7 +31,13 @@ namespace ASE3040.Infrastructure
 			services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
 			services.AddScoped<ApplicationDbContextInitialiser>();
-			
+
+			services.AddAuthentication().AddMicrosoftAccount(options =>
+			{
+				options.ClientId = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_CLIENT_ID"];
+				options.ClientSecret = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"];
+			});
+				
 			return services;
 		}
 	}

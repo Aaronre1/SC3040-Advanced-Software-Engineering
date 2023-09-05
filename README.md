@@ -3,6 +3,7 @@
 # Setup
 
 ## Add a migration
+Only use SqlServer when applying migrations
 ```
 dotnet ef migrations add initial --project src/Infrastructure --startup-project src/Web --output-dir Data/Migrations
 ```
