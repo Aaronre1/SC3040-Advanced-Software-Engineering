@@ -7,6 +7,7 @@ namespace ASE3040.Infrastructure.Data
 {
 	public class ApplicationDbContext : DbContext, IApplicationDbContext
 	{
+        public ApplicationDbContext(){}
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<ToDoList> ToDoLists { get; set; }

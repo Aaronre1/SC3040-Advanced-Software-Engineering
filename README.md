@@ -3,14 +3,9 @@
 # Setup
 
 ## Add a migration
-Only use SqlServer when applying migrations
 ```
-dotnet ef migrations add initial --project src/Infrastructure --startup-project src/Web --output-dir Data/Migrations
+dotnet ef migrations add migrationName --project src/Infrastructure --startup-project src/Web --context SqliteApplicationDbContext --output-dir Data/Migrations/SqliteMigrations -- --provider Sqlite
+dotnet ef migrations add migrationName --project src/Infrastructure --startup-project src/Web --context ApplicationDbContext --output-dir Data/Migrations/SqlServerMigrations -- --provider SqlServer
 ```
-Rename `initial` to your own migration name.
-```
-dotnet ef migrations add addToDoList --project src/Infrastructure --startup-project src/Web --output-dir Data/Migrations
-```
-
-## Update database schema
-Run the app, it should apply automatically.
+## Apply migration
+Running the app will apply the migration automatically through `ApplicationDbContextInitialiser.cs`.

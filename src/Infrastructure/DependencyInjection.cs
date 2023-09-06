@@ -15,29 +15,34 @@ namespace ASE3040.Infrastructure
 			var connectionString = configuration.GetConnectionString("DefaultConnection");
 			var provider = configuration.GetValue("Provider", "SqlServer");
 
-			services.AddDbContext<ApplicationDbContext>((sp, options) =>
+			switch (provider)
 			{
-				switch (provider)
-				{
-					case "Sqlite": options.UseSqlite(connectionString);
-						break;
-					case "SqlServer": options.UseSqlServer(connectionString);
-						break;
-					default:
-						throw new Exception($"Unsupported provider: {provider}");
-				}
-            });
-
-			services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
+				case "Sqlite":
+					services.AddDbContext<SqliteApplicationDbContext>(options =>
+					{
+						options.UseSqlite(connectionString);
+					});
+					services.AddScoped<IApplicationDbContext>(p => p.GetRequiredService<SqliteApplicationDbContext>());
+					break;
+				case "SqlServer":
+					services.AddDbContext<ApplicationDbContext>(options =>
+					{
+						options.UseSqlServer(connectionString);
+					});
+					services.AddScoped<IApplicationDbContext>(p => p.GetRequiredService<ApplicationDbContext>());
+					break;
+				default:
+					throw new Exception($"Unsupported provider: {provider}");
+			}
+			
 			services.AddScoped<ApplicationDbContextInitialiser>();
 
-			services.AddAuthentication().AddMicrosoftAccount(options =>
-			{
-				options.ClientId = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_CLIENT_ID"];
-				options.ClientSecret = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"];
-			});
-				
+			// services.AddAuthentication().AddMicrosoftAccount(options =>
+			// {
+			// 	options.ClientId = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_CLIENT_ID"];
+			// 	options.ClientSecret = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"];
+			// });
+			
 			return services;
 		}
 	}

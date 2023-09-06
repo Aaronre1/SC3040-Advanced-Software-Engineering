@@ -1,4 +1,5 @@
 ﻿using System;
+using ASE3040.Application.Common.Interfaces;
 using ASE3040.Domain.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +25,11 @@ namespace ASE3040.Infrastructure.Data
     public class ApplicationDbContextInitialiser
     {
         private readonly ILogger<ApplicationDbContextInitialiser> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
         public ApplicationDbContextInitialiser(
             ILogger<ApplicationDbContextInitialiser> logger,
-            ApplicationDbContext context)
+            IApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -42,24 +43,29 @@ namespace ASE3040.Infrastructure.Data
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while initialising the database.");
+                _logger.LogError(ex, "An error occurred while initialising the database");
                 throw;
             }
         }
 
         public async Task SeedAsync()
         {
-            if (!_context.ToDoItems.Any())
+            if (!_context.ToDoLists.Any())
             {
-                var items = new List<ToDoItem>
+                var list = new ToDoList
                 {
-                    new ToDoItem { Title = "To do item 1"},
-                    new ToDoItem { Title = "To do item 2"}
+                    Title = "Default ToDo List",
+                    Items =
+                    {
+                        new ToDoItem { Title = "To do item 1" },
+                        new ToDoItem { Title = "To do item 2" },
+                        new ToDoItem { Title = "To do item 3" }
+                    }
                 };
 
-                _context.ToDoItems.AddRange(items);
+                _context.ToDoLists.Add(list);
 
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(default);
             }
 
         }
