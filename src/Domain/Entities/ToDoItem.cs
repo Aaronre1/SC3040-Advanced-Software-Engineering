@@ -1,7 +1,7 @@
 ﻿using System;
 namespace ASE3040.Domain.Entities
 {
-	public class ToDoItem : BaseEntity
+	public class ToDoItem : BaseAuditableEntity
 	{
 		public int ListId { get; set; }
 
@@ -11,6 +11,7 @@ namespace ASE3040.Domain.Entities
 
 		public bool Done { get; set; }
 
+		public ToDoList List { get; set; } = null!;
 	}
 }
 

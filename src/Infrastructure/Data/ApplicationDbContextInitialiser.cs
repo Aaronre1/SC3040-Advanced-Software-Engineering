@@ -18,7 +18,7 @@ namespace ASE3040.Infrastructure.Data
 
             await initialiser.InitialiseAsync();
 
-            await initialiser.SeedAsync();
+            //await initialiser.SeedAsync();
         }
     }
 

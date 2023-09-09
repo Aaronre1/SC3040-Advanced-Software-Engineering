@@ -23,10 +23,7 @@
     <None Remove="Features\ToDoItems\Queries\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Common\Interfaces\" />
-    <Folder Include="Features\" />
-    <Folder Include="Features\ToDoItems\" />
-    <Folder Include="Features\ToDoItems\Queries\" />
+    <Folder Include="Features\TodoItems\" />
+    <Folder Include="Features\TodoItems\Queries\" />
   </ItemGroup>
 </Project>

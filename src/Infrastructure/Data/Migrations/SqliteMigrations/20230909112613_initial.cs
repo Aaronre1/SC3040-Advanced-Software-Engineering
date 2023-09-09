@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -16,7 +17,10 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false)
+                    Title = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -33,22 +37,25 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                     Title = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     Note = table.Column<string>(type: "TEXT", nullable: true),
                     Done = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ToDoListId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ToDoItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ToDoItems_ToDoLists_ToDoListId",
-                        column: x => x.ToDoListId,
+                        name: "FK_ToDoItems_ToDoLists_ListId",
+                        column: x => x.ListId,
                         principalTable: "ToDoLists",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ToDoItems_ToDoListId",
+                name: "IX_ToDoItems_ListId",
                 table: "ToDoItems",
-                column: "ToDoListId");
+                column: "ListId");
         }
 
         /// <inheritdoc />

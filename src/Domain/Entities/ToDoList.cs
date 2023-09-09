@@ -1,6 +1,6 @@
 ﻿namespace ASE3040.Domain.Entities
 {
-    public class ToDoList : BaseEntity
+    public class ToDoList : BaseAuditableEntity
 	{
 		public string? Title { get; set; }
 

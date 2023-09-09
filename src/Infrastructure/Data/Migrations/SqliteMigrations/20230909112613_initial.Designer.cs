@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
 {
     [DbContext(typeof(SqliteApplicationDbContext))]
-    [Migration("20230906170834_initial")]
+    [Migration("20230909112613_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -26,8 +26,17 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("Done")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ListId")
                         .HasColumnType("INTEGER");
@@ -40,12 +49,9 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ToDoListId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ToDoListId");
+                    b.HasIndex("ListId");
 
                     b.ToTable("ToDoItems");
                 });
@@ -55,6 +61,15 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -68,9 +83,13 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
 
             modelBuilder.Entity("ASE3040.Domain.Entities.ToDoItem", b =>
                 {
-                    b.HasOne("ASE3040.Domain.Entities.ToDoList", null)
+                    b.HasOne("ASE3040.Domain.Entities.ToDoList", "List")
                         .WithMany("Items")
-                        .HasForeignKey("ToDoListId");
+                        .HasForeignKey("ListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("List");
                 });
 
             modelBuilder.Entity("ASE3040.Domain.Entities.ToDoList", b =>

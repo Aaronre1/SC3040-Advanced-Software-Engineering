@@ -1,5 +1,6 @@
 ﻿using ASE3040.Application.Features.ToDoItems.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -22,6 +23,12 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         ToDoItems = await _mediator.Send(new GetToDoItemsQuery());
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        await HttpContext.SignOutAsync();
+        return RedirectToPage();
     }
 
 }
