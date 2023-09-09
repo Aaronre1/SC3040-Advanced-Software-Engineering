@@ -8,11 +8,9 @@ namespace ASE3040.Infrastructure.Data
 {
 	public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        public ApplicationDbContext(){}
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
+        // public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        // {
+        // }
 
         public ApplicationDbContext(DbContextOptions options): base(options)
         {
