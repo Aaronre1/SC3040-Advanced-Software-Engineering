@@ -1,6 +1,10 @@
 # SC3040-Advanced-Software-Engineering
 
 # Setup
+## Install .NET Core CLI tools
+```
+dotnet tool install --global dotnet-ef
+```
 
 ## Add a migration
 ```

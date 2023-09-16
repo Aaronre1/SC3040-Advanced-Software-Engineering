@@ -1,9 +1,10 @@
 namespace ASE3040.Domain.Entities;
 
-public class BudgetItem
+public class BudgetItem : BaseAuditableEntity
 {
     public string? Title { get; set; }
     public decimal Budget { get; set; }
+    
     public decimal ActualExpense { get; set; }
 }
 

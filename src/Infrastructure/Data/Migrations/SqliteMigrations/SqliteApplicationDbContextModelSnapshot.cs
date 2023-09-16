@@ -17,16 +17,56 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
 
+            modelBuilder.Entity("ASE3040.Domain.Entities.BudgetItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("ActualExpense")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Budget")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ToDoListId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ToDoListId");
+
+                    b.ToTable("BudgetItem");
+                });
+
             modelBuilder.Entity("ASE3040.Domain.Entities.ToDoItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("BudgetId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Done")
@@ -47,6 +87,8 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
 
                     b.HasIndex("ListId");
 
@@ -73,24 +115,44 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("TripBudget")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("ToDoLists");
                 });
 
+            modelBuilder.Entity("ASE3040.Domain.Entities.BudgetItem", b =>
+                {
+                    b.HasOne("ASE3040.Domain.Entities.ToDoList", null)
+                        .WithMany("BudgetList")
+                        .HasForeignKey("ToDoListId");
+                });
+
             modelBuilder.Entity("ASE3040.Domain.Entities.ToDoItem", b =>
                 {
+                    b.HasOne("ASE3040.Domain.Entities.BudgetItem", "Budget")
+                        .WithMany()
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ASE3040.Domain.Entities.ToDoList", "List")
                         .WithMany("Items")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Budget");
+
                     b.Navigation("List");
                 });
 
             modelBuilder.Entity("ASE3040.Domain.Entities.ToDoList", b =>
                 {
+                    b.Navigation("BudgetList");
+
                     b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
