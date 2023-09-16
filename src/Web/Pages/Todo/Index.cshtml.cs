@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using ASE3040.Domain.Entities;
 using ASE3040.Infrastructure.Data;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASE3040.Web.Pages.Todo
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ISender _mediator;
@@ -26,5 +28,10 @@ namespace ASE3040.Web.Pages.Todo
         {
             ToDoLists = await _mediator.Send(new GetToDoLists());
         }
+    }
+
+    public class Temp
+    {
+        
     }
 }
