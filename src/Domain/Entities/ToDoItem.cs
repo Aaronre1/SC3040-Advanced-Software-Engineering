@@ -14,6 +14,8 @@ namespace ASE3040.Domain.Entities
 		public ToDoList List { get; set; } = null!;
 
 		public BudgetItem Budget { get; set; } = null!;
+
+		public DateTime DateTime { get; set; }
 	}
 }
 

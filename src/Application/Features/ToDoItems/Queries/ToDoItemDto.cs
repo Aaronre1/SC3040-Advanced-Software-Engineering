@@ -14,6 +14,8 @@ namespace ASE3040.Application.Features.ToDoItems.Queries
         public string? Note { get; set; }
 
         public bool Done { get; set; }
+        
+        public DateTime DateTime { get; set; }
 
         private class Mapping: Profile
         {
