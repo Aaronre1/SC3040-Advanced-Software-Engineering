@@ -8,6 +8,7 @@
     <UserSecretsId>64b11916-7c29-4515-a7fc-30000b2469fd</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'ASE3040.Web(Prod)' " />
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
@@ -33,5 +34,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Todo\" />
+    <Folder Include="Pages\Calender\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Pages\Calender\" />
   </ItemGroup>
 </Project>
