@@ -1,27 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 25.0.1706.3
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BD69450A-36B4-4057-B51D-E8253BDE214E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{55DF97D7-5A4B-4D78-ABDF-54E38D08AC72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{B1B45FA2-48F3-492F-92DA-382A4A3D5D04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{B1B45FA2-48F3-492F-92DA-382A4A3D5D04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "src\Web\Web.csproj", "{D6C7AF47-D9DF-41A2-A1AA-F5015BD2DBD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "src\Web\Web.csproj", "{D6C7AF47-D9DF-41A2-A1AA-F5015BD2DBD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{F9920D49-416C-42FC-B6C0-9B86FC2F19D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{F9920D49-416C-42FC-B6C0-9B86FC2F19D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{53282CBE-6714-40E4-8956-346B9B3241C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{53282CBE-6714-40E4-8956-346B9B3241C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{831F8EA5-A881-4E72-8BDE-93C46E6923EA}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
 		azure-pipelines.yml = azure-pipelines.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.FunctionalTests", "test\Application.FunctionalTests\Application.FunctionalTests.csproj", "{236C5651-0721-4706-AACE-DFBEA88E3E97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.FunctionalTests", "test\Application.FunctionalTests\Application.FunctionalTests.csproj", "{236C5651-0721-4706-AACE-DFBEA88E3E97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,14 +53,14 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E39050A8-CC5F-40C7-A36D-B9C1D7A13EA3}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B1B45FA2-48F3-492F-92DA-382A4A3D5D04} = {BD69450A-36B4-4057-B51D-E8253BDE214E}
 		{D6C7AF47-D9DF-41A2-A1AA-F5015BD2DBD5} = {BD69450A-36B4-4057-B51D-E8253BDE214E}
 		{F9920D49-416C-42FC-B6C0-9B86FC2F19D1} = {BD69450A-36B4-4057-B51D-E8253BDE214E}
 		{53282CBE-6714-40E4-8956-346B9B3241C3} = {BD69450A-36B4-4057-B51D-E8253BDE214E}
 		{236C5651-0721-4706-AACE-DFBEA88E3E97} = {55DF97D7-5A4B-4D78-ABDF-54E38D08AC72}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E39050A8-CC5F-40C7-A36D-B9C1D7A13EA3}
 	EndGlobalSection
 EndGlobal
