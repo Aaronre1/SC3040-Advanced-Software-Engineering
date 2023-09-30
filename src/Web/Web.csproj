@@ -33,7 +33,6 @@
     <_ContentIncludedByDefault Remove="Areas\Identity\SignedOut.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pages\Todo\" />
     <Folder Include="Pages\Calender\" />
   </ItemGroup>
   <ItemGroup>
