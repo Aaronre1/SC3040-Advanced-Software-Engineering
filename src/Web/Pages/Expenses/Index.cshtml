@@ -1,33 +1,32 @@
 @page
-@model ASE3040.Web.Pages.Todo.IndexModel
+@model IndexModel
 
 @{
     ViewData["Title"] = "Expenses";
 }
-
+<h1>Expenses Tracker</h1>
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Expenses</h1>
-
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
 
             <h3>Create New Expenses </h3>
-            <form>
-                <p>
-                    <label>Place : <input type="text" /></label>
-                </p>
-                <p>
-                    <label>Amount: <input type="number" /></label>
-                </p>
-
-                <p>
-                    <input type="submit" name="submit" value="Submit" />
-                </p>
-            </form>
+                <div class="row">
+                    <div class="col-md-4">
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Title" class="control-label"></label>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
         </div>
         <div class="card-body">
@@ -36,116 +35,36 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Place</th>
-                            <th>Amount</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Items)</th>
                             <th>Changes</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Date</th>
-                            <th>Place</th>
-                            <th>Amount</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Items)</th>
                             <th>Changes</th>
                         </tr>
                     </tfoot>
                     <tbody>
+                    @foreach (var item in Model.ToDoLists)
+                    {
                         <tr>
                             <th>28 September 2023</th>
-                            <td>Chinatown</td>
-                            <td>$100</td>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Items.Count)</td>
                             <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
+                                <a asp-page="./Edit" asp-route-id="@item.Id"><i class="fa fa-pen icon"></i> </a>
+                                | <a asp-page="./Details" asp-route-id="@item.Id"><i class="fa fa-duotone fa-list"></i></a>
+                                | <a asp-page="./Delete" asp-route-id="@item.Id"><i class="fa fa-trash icon"></i></a>
                             </td>
                         </tr>
-                        <tr>
-                            <th>28 September 2023</th>
-                            <td>Little India</td>
-                            <td>$70</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>28 September 2023</th>
-                            <td>Orchard Road</td>
-                            <td>$300</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>28 September 2023</th>
-                            <td>Sentosa</td>
-                            <td>$50</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>29 September 2023</th>
-                            <td>Marina Bay Sands</td>
-                            <td>$100</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>29 September 2023</th>
-                            <td>Gardens By the Bay</td>
-                            <td>$20</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>29 September 2023</th>
-                            <td>Lau Pa Sat</td>
-                            <td>$150</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>29 September 2023</th>
-                            <td>Marina Barradge</td>
-                            <td>$0</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>30 September 2023</th>
-                            <td>East Coast Park</td>
-                            <td>$30</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>30 September 2023</th>
-                            <td>Katong Road</td>
-                            <td>$50</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>30 September 2023</th>
-                            <td>Jewel</td>
-                            <td>$70</td>
-                            <td style="text-align: center;">
-                                <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                            </td>
-                        </tr>
-
+                    }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
 </div>
-<!-- /.container-fluid -->
-            </div>
-<!-- End of Main Content -->

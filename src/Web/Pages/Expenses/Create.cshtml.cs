@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ASE3040.Application.Features.TodoLists.Commands.Create;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ASE3040.Domain.Entities;
-using ASE3040.Infrastructure.Data;
-using MediatR;
 
-namespace ASE3040.Web.Pages.Todo
+namespace ASE3040.Web.Pages.Expenses
 {
     public class CreateModel : PageModel
     {
