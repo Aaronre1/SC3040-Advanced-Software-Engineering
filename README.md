@@ -15,3 +15,6 @@ dotnet ef migrations add migrationName --project src/Infrastructure --startup-pr
 ```
 ## Apply migration
 Running the app will apply the migration automatically through `ApplicationDbContextInitialiser.cs`.
+
+
+dotnet ef migrations add itinerary --project src/Infrastructure --startup-project src/Web --context SqliteApplicationDbContext --output-dir Data/Migrations/SqliteMigrations -- --provider Sqlite

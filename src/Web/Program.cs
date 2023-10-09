@@ -2,6 +2,9 @@
 using ASE3040.Infrastructure;
 using ASE3040.Infrastructure.Data;
 using ASE3040.Web;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 

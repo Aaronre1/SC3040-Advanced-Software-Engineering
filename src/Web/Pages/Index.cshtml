@@ -4,30 +4,20 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container my-5">
+    <div class="p-5 text-center bg-body-tertiary rounded-3">
+        <div class="bi mt-4 mb-3 rotate-n-15" style="color: var(--bs-indigo); font-size: 5rem;" width="100" height="100">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <h1 class="text-body-emphasis">Travel Planner</h1>
+        <p class="col-lg-8 mx-auto fs-5 text-muted">
+            Are you ready to embark on unforgettable journeys, explore new horizons, and create lasting memories? Look no further, because you've just discovered your passport to hassle-free travel planning.
+        </p>
+        <div class="d-inline-flex gap-2 mb-5">
+            <a class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" asp-page="/Itinerary/Index">
+                Start planning 
+                <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+    </div>
 </div>
-<div>Hello World !</div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Note</th>
-            <th scope="col">Done</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ToDoItems)
-        {
-            <tr>
-                <th scope="row">@Html.DisplayFor(i => item.Id)</th>
-                <td>@Html.DisplayFor(i => item.Title)</td>
-                <td>@Html.DisplayFor(i => item.Note)</td>
-                <td>@Html.DisplayFor(i => item.Done)</td>
-            </tr>
-        }
-    </tbody>
-</table>

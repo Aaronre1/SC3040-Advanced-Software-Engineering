@@ -2,17 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace ASE3040.Application.Common.Interfaces
+namespace ASE3040.Application.Common.Interfaces;
+
+public interface IApplicationDbContext
 {
-	public interface IApplicationDbContext
-	{
-		DbSet<ToDoList> ToDoLists { get; set; }
+	DbSet<Itinerary> Itineraries { get; }
+	DbSet<Activity> Activities { get; }
 
-		DbSet<ToDoItem> ToDoItems { get; set; }
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+	Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         
-        DatabaseFacade Database { get; }
-	}
+	DatabaseFacade Database { get; }
 }
-

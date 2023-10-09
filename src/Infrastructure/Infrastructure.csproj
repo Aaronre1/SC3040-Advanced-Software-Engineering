@@ -12,7 +12,6 @@
     <None Remove="Data\Configurations\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Configurations\" />
     <Folder Include="Data\Migrations\SqliteMigrations\" />
     <Folder Include="Data\Migrations\SqlServerMigrations\" />
   </ItemGroup>

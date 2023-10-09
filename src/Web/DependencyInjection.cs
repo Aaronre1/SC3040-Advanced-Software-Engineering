@@ -2,6 +2,8 @@ using ASE3040.Application.Common.Interfaces;
 using ASE3040.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ASE3040.Web;
 

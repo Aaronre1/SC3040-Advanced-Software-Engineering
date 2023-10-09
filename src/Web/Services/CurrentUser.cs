@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using ASE3040.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace ASE3040.Web.Services;
 

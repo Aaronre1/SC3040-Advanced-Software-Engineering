@@ -1,29 +1,21 @@
-using ASE3040.Application.Features.TodoLists.Queries;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ASE3040.Web.Pages.Todo
+namespace ASE3040.Web.Pages.Expenses;
+
+[Authorize]
+public class IndexModel : PageModel
 {
-    [Authorize]
-    public class IndexModel : PageModel
+    private readonly ISender _mediator;
+
+    public IndexModel(ISender mediator)
     {
-        private readonly ISender _mediator;
-
-        public IndexModel(ISender mediator)
-        {
-            _mediator = mediator;
-        }
-
-        public IList<ToDoListDto> ToDoLists { get; set; } = default!;
-
-        public async Task OnGetAsync()
-        {
-            ToDoLists = await _mediator.Send(new GetToDoLists());
-        }
+        _mediator = mediator;
     }
 
-    public class Temp
+    public async Task OnGetAsync()
     {
     }
 }

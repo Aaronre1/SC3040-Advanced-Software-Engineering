@@ -38,4 +38,9 @@
   <ItemGroup>
     <None Remove="Pages\Calender\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
