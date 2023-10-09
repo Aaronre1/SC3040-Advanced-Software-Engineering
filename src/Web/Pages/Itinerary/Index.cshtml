@@ -1,14 +1,14 @@
 ﻿@page
 @model ASE3040.Web.Pages.Itinerary.IndexModel
 @{
-    ViewData["Title"] = "Itinerary";
+    ViewData["Title"] = "Your Itineraries";
 }
 
-<h1 class="h3 mb-2 text-gray-800">Itinerary</h1>
+<h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -29,13 +29,13 @@
                 @foreach (var item in Model.Itineraries)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(x => item.Id)/td>
-                        <td>@Html.DisplayFor(x => item.Title)/td>
-                        <td>@Html.DisplayFor(x => item.From)/td>
-                        <td>@Html.DisplayFor(x => item.To)/td>
-                        <td>@Html.DisplayFor(x => item.Budget)/td>
-                        <td>@Html.DisplayFor(x => item.Expenses)/td>
-                        <td>@Html.DisplayFor(x => item.LastModified)/td>
+                        <td>@Html.DisplayFor(x => item.Id)</td>
+                        <td>@Html.DisplayFor(x => item.Title)</td>
+                        <td>@Html.DisplayFor(x => item.From)</td>
+                        <td>@Html.DisplayFor(x => item.To)</td>
+                        <td>@Html.DisplayFor(x => item.Budget)</td>
+                        <td>@Html.DisplayFor(x => item.Expenses)</td>
+                        <td>@Html.DisplayFor(x => item.LastModified)</td>
                         <td></td>
                     </tr>
                 }
@@ -45,15 +45,48 @@
     </div>
 </div>
 
+<div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content needs-validation" method="post" asp-page-handler="Create">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="staticBackdropLabel">Create new itinerary</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label asp-for="CreateInput.Title">Title</label>
+                    <input class="form-control" asp-for="CreateInput.Title">
+                    <span asp-validation-for="CreateInput.Title" class="invalid-feedback"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CreateInput.Title">Budget ($)</label>
+                    <input class="form-control" asp-for="CreateInput.Budget">
+                    <span asp-validation-for="CreateInput.Budget" class="invalid-feedback"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CreateInput.Description">Description</label>
+                    <textarea class="form-control" asp-for="CreateInput.Description"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @section Scripts
 {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script type="text/javascript">
     $(document).ready(function() {
       $('#IndexTable').DataTable({
         columnDefs: [
-            { orderable: false, _targets: 7 }
+            { orderable: false, targets: 7 }
         ]
-      
       });
     });
     </script>

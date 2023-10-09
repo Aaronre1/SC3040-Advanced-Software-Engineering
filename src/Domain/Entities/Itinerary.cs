@@ -6,7 +6,7 @@ public class Itinerary : BaseAuditableEntity
     public string? Description { get; set; }
     public decimal? Budget { get; set; }
     public ICollection<Activity> Activities { get; set; } = new List<Activity>();
-    public DateTime? From => Activities.Min(x => x.DateTime);
-    public DateTime? To => Activities.Max(x => x.DateTime);
-    public decimal? Expenses => Activities.Sum(x => x.Cost);
+    public DateTime? From => Activities.Select(x => x.DateTime).DefaultIfEmpty().Min();
+    public DateTime? To => Activities.Select(x => x.DateTime).DefaultIfEmpty().Max();
+    public decimal? Expenses => Activities.Select(x => x.Cost).DefaultIfEmpty().Sum();
 }
