@@ -1,16 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using ASE3040.Application.Features.ToDoItems.Commands.Create;
+using MediatR;
 
-namespace ASE3040.Web.Pages.Calender
+[Route("api/[controller]")]
+[ApiController]
+public class ToDoItemsController : ControllerBase
 {
-	public class IndexModel : PageModel
+    private readonly IMediator _mediator;
+
+    public ToDoItemsController(IMediator mediator)
     {
-        public void OnGet()
-        {
-        }
+        _mediator = mediator;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateToDoItem(CreateToDoItemCommand command)
+    {
+        var result = await _mediator.Send(command);
+
+        if (result.Succeeded)
+            return Ok(new { success = true });
+
+        return BadRequest(new { success = false, errors = result.Errors });
     }
 }

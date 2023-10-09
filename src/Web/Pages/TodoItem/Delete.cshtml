@@ -1,18 +1,16 @@
 ﻿@page
-@model ASE3040.Web.Pages.Expenses.DeleteModel
+@model ASE3040.Web.Pages.ToDoItems.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete ToDo List";
+    ViewData["Title"] = "Delete ToDo Item";
 }
 
-<h1>Are you sure you want to delete this List?</h1>
+<h1>Are you sure you want to delete this item?</h1>
 
 <div>
     <strong>Title:</strong>
     @Model.ToDoItem.Title
 </div>
-
-<!-- Add more details as required -->
 
 <form method="post">
     <input type="submit" value="Confirm Delete" class="btn btn-danger" />

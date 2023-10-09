@@ -1,0 +1,93 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "To Do Item";
+}
+<h1>To Do Item</h1>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+
+            <h3>Create To Do Item </h3>
+            <div class="row">
+                <div class="col-md-8">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <!-- ToDoListId -->
+                        <div class="form-group">
+                            <label asp-for="ToDoListId" class="control-label"></label>
+                            <input asp-for="ToDoListId" class="form-control" />
+                            <span asp-validation-for="ToDoListId" class="text-danger"></span>
+                        </div>
+                        
+                        <!-- Title -->
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label"></label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <!-- Note -->
+                        <div class="form-group">
+                            <label asp-for="Note" class="control-label"></label>
+                            <input asp-for="Note" class="form-control" />
+                            <span asp-validation-for="Note" class="text-danger"></span>
+                        </div>
+
+                        <!-- DateTime -->
+                        <div class="form-group">
+                            <label asp-for="DateTime" class="control-label"></label>
+                            <input asp-for="DateTime" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="DateTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoItems[0].Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoItems[0].Note)</th>
+                            <th>Changes</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Date</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoItems[0].Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoItems[0].Note)</th>
+                            <th>Changes</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                    @foreach (var item in Model.ToDoItems)
+                    {
+                        <tr>
+                            <th>@item.DateTime.ToString("dd MMMM yyyy")</th>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                            <td style="text-align: center;">
+                                <a asp-page="./Edit" asp-route-id="@item.Id"><i class="fa fa-pen icon"></i> </a>
+                                | <a asp-page="./Details" asp-route-id="@item.Id"><i class="fa fa-duotone fa-list"></i></a>
+                                | <a asp-page="./Delete" asp-route-id="@item.Id"><i class="fa fa-trash icon"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,8 @@ namespace ASE3040.Application.Features.TodoLists.Commands.Create;
 public class CreateToDoListCommand : IRequest<Result>
 {
     public string? Title { get; set; }
+    public decimal TripBudget { get; set; }
+    public List<decimal> BudgetList { get; set; } = new();
 }
 
 public class CreateToDoListCommandHandler : IRequestHandler<CreateToDoListCommand, Result>

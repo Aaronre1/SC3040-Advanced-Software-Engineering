@@ -1,5 +1,5 @@
 ﻿@page
-@model ASE3040.Web.Pages.Calender.IndexModel
+@using ASE3040.Web.Pages.Calender
 @{
 }
 
@@ -11,8 +11,37 @@
     <script>document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth'
+                initialView: 'dayGridMonth',
+                dateClick: function(info) {
+                    createToDoItem(info.dateStr);
+                }
             });
             calendar.render();
-        });</script>
+        });
+        
+      function createToDoItem(dateStr) {
+          $.ajax({
+              type: "POST",
+              url: "/api/todoitems",
+              data: JSON.stringify({
+                  DateTime: dateStr
+              }),
+              contentType: "application/json; charset=utf-8",
+              dataType: "json",
+              success: function(response) {
+                  if(response.success) {
+                      alert('ToDo item created successfully for ' + dateStr);
+                  } else {
+                      alert('Failed to create ToDo item for ' + dateStr);
+                  }
+              },
+              error: function(error) {
+                  alert('There was an error while creating ToDo item');
+              }
+          });
+      }
+  
+    
+    
+    </script>
 } 

@@ -1,173 +1,70 @@
 ﻿@page
 @model IndexModel
+
 @{
+    ViewData["Title"] = "To Do List";
 }
+<h1>To Do List</h1>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
 
-<div id="content-wrapper" class="d-flex flex-column">
-    <!-- Main Content -->
-    <div id="content">
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-            <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Itinerary</h1>
-
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-
-                    <h3>Create New Itinerary </h3>
-                    <form>
-                        <p>
-                            <label>Place : <input type="text" /></label>
-                        </p>
-                        <p>
-                            <label>Date : <input type="Date" /></label>
-                        </p>
-                        <p>
-                            <label>Time : <input type="Time" /></label>
-                        </p>
-                        <p>
-                            <label>Address : <input type="Address" /></label>
-                        </p>
-                        <p>
-                            <input type="submit" name="submit" value="Submit" />
-                        </p>
-                    </form>
-
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Place</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Address</th>
-                                    <th>Changes</th>
-
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Place</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Address</th>
-                                    <th>Changes</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr>
-                                    <td>Chinatown</td>
-                                    <td>28 September 2023</td>
-                                    <td>10 AM</td>
-                                    <td><a href="https://maps.app.goo.gl/VWAT9BJciR25SLUn9">Chinatown Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Little India</td>
-                                    <td>28 September 2023</td>
-                                    <td>12 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/j8kPx4w32uEnFcYTA">Little India Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Orchard Road</td>
-                                    <td>28 September 2023</td>
-                                    <td>3 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/5Sq81tumtxUdd3PH9">Orchard Road Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Sentosa</td>
-                                    <td>28 September 2023</td>
-                                    <td>5 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Sentosa Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Marina Bay Sands</td>
-                                    <td>29 September 2023</td>
-                                    <td>10 AM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Marina Bay Sands Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Gardens By the Bay</td>
-                                    <td>29 September 2023</td>
-                                    <td>12 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Gardens By the Bay Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Lau Pa Sat</td>
-                                    <td>29 September 2023</td>
-                                    <td>1 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Lau Pa Sat Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Marina Barradge</td>
-                                    <td>29 September 2023</td>
-                                    <td>2 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Marina Barradge Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>East Coast Park</td>
-                                    <td>30 September 2023</td>
-                                    <td>10 AM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">East Coast Park Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Katong Road</td>
-                                    <td>30 September 2023</td>
-                                    <td>12 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Katong Road Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Jewel</td>
-                                    <td>30 September 2023</td>
-                                    <td>2 PM</td>
-                                    <td><a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Jewel Address</a></td>
-                                    <td style="text-align: center;">
-                                        <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+            <h3>Create To Do List </h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Title" class="control-label"></label>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
 
         </div>
-        <!-- /.container-fluid -->
-
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Items)</th>
+                            <th>Changes</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Date</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.ToDoLists[0].Items)</th>
+                            <th>Changes</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                    @foreach (var item in Model.ToDoLists)
+                    {
+                        <tr>
+                            <th>28 September 2023</th>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Items.Count)</td>
+                            <td style="text-align: center;">
+                                <a asp-page="./Edit" asp-route-id="@item.Id"><i class="fa fa-pen icon"></i> </a>
+                                | <a asp-page="./Details" asp-route-id="@item.Id"><i class="fa fa-duotone fa-list"></i></a>
+                                | <a asp-page="./Delete" asp-route-id="@item.Id"><i class="fa fa-trash icon"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <!-- End of Main Content -->
 </div>
