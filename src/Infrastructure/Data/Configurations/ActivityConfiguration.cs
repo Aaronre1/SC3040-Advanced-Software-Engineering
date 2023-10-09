@@ -14,5 +14,12 @@ public class ActivityConfiguration : IEntityTypeConfiguration<Activity>
 
         builder.Property(x => x.DateTime)
             .IsRequired();
+
+        builder.Property(x => x.Cost)
+            .HasColumnType("money");
+
+        builder.HasOne(x => x.Itinerary)
+            .WithMany(x => x.Activities)
+            .HasForeignKey(x => x.ItineraryId);
     }
 }

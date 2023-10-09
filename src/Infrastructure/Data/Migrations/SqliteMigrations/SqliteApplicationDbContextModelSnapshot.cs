@@ -24,7 +24,7 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal?>("Cost")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("money");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
@@ -66,7 +66,7 @@ namespace ASE3040.Infrastructure.Data.Migrations.SqliteMigrations
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal?>("Budget")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("money");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");

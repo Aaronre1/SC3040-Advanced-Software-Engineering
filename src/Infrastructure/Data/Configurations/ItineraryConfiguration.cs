@@ -11,5 +11,8 @@ public class ItineraryConfiguration : IEntityTypeConfiguration<Itinerary>
         builder.Property(x => x.Title)
             .HasMaxLength(200)
             .IsRequired();
+
+        builder.Property(x => x.Budget)
+            .HasColumnType("money");
     }
 }

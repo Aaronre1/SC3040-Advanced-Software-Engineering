@@ -18,3 +18,9 @@ Running the app will apply the migration automatically through `ApplicationDbCon
 
 
 dotnet ef migrations add itinerary --project src/Infrastructure --startup-project src/Web --context SqliteApplicationDbContext --output-dir Data/Migrations/SqliteMigrations -- --provider Sqlite
+dotnet ef migrations add itinerary --project src/Infrastructure --startup-project src/Web --context ApplicationDbContext --output-dir Data/Migrations/SqlServerMigrations -- --provider SqlServer
+
+dotnet ef migrations add money --project src/Infrastructure --startup-project src/Web --context ApplicationDbContext --output-dir Data/Migrations/SqlServerMigrations -- --provider SqlServer
+
+dotnet ef migrations add relations --project src/Infrastructure --startup-project src/Web --context SqliteApplicationDbContext --output-dir Data/Migrations/SqliteMigrations -- --provider Sqlite
+dotnet ef migrations add relations --project src/Infrastructure --startup-project src/Web --context ApplicationDbContext --output-dir Data/Migrations/SqlServerMigrations -- --provider SqlServer
