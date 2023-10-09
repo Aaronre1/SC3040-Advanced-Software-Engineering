@@ -1,13 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ASE3040.Application.Features.TodoLists.Queries;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ASE3040.Domain.Entities;
-using ASE3040.Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -22,7 +14,8 @@ namespace ASE3040.Web.Pages.Todo
         {
             _mediator = mediator;
         }
-        public IList<ToDoListDto> ToDoLists { get;set; } = default!;
+
+        public IList<ToDoListDto> ToDoLists { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
@@ -32,6 +25,5 @@ namespace ASE3040.Web.Pages.Todo
 
     public class Temp
     {
-        
     }
 }
