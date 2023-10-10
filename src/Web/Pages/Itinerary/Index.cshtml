@@ -36,7 +36,10 @@
                         <td>@Html.DisplayFor(x => item.Budget)</td>
                         <td>@Html.DisplayFor(x => item.Expenses)</td>
                         <td>@Html.DisplayFor(x => item.LastModified)</td>
-                        <td></td>
+                        <td class="text-center">
+                            <a asp-page="Details" class="btn btn-primary"><i class="fa fa-pen icon"></i></a>
+                            <button class="btn btn-danger"><i class="fa fa-trash icon"></i></button>
+                        </td>
                     </tr>
                 }
                 </tbody>
@@ -44,7 +47,7 @@
         </div>
     </div>
 </div>
-
+ 
 <div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form class="modal-content needs-validation" method="post" asp-page-handler="Create">
@@ -75,6 +78,7 @@
         </form>
     </div>
 </div>
+
 
 @section Scripts
 {
