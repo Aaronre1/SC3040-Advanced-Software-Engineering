@@ -12,7 +12,6 @@
     @await Component.InvokeAsync("ValidationAlert")
 }
 
-
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
@@ -78,7 +77,9 @@
         <form class="modal-content needs-validation" method="post" asp-page-handler="Create">
             <div class="modal-header">
                 <h3 class="modal-title fs-5" id="staticBackdropLabel">Create new itinerary</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">

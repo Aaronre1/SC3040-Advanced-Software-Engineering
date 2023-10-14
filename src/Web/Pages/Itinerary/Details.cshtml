@@ -4,7 +4,16 @@
 @{
     ViewData["Title"] = Model.Itinerary.Title;
 }
-<h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+
+<div class="d-flex justify-content-between align-items-center my-2 flex-wrap">
+    <h2 class="me-auto mb-0 text-gray-800">@ViewData["Title"]</h2>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb float-end mb-0">
+            <li class="breadcrumb-item"><a asp-page="Index">Itineraries</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+</div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
