@@ -33,7 +33,6 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         Itineraries = await _mediator.Send(new GetItineraries());
-
         return Page();
     }
 
