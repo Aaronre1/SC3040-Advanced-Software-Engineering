@@ -1,3 +1,6 @@
+
+using ASE3040.Application.Common.Models;
+
 namespace ASE3040.Application.Common.Behaviours;
 
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
@@ -26,7 +29,18 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
                 .ToList();
 
             if (failures.Any())
+            {
+                if (typeof(TResponse) == typeof(Result))
+                {
+                    var response = (TResponse)Activator.CreateInstance(
+                        typeof(TResponse),
+                        false,
+                        failures.Select(x => x.ErrorMessage));
+                    return response;
+                }
                 throw new ValidationException(failures);
+            }
+                
         }
         return await next();
     }

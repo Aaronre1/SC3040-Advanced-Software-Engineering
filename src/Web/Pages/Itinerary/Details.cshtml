@@ -1,0 +1,111 @@
+@page
+@model ASE3040.Web.Pages.Itinerary.Details
+
+@{
+    ViewData["Title"] = Model.Itinerary.Title;
+}
+<h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Add Activity</button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="IndexTable" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Cost ($)</th>
+                    <th>Done</th>
+                    <th>Modified</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Itinerary.Activities)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => item.Id)</td>
+                        <td>@Html.DisplayFor(x => item.Title)</td>
+                        <td>@Html.DisplayFor(x => item.DateTime)</td>
+                        <td>@Html.DisplayFor(x => item.Cost)</td>
+                        <td>@Html.DisplayFor(x => item.Done)</td>
+                        <td>@Html.DisplayFor(x => item.LastModified)</td>
+                        <td class="text-center">
+                            <div class="btn-toolbar" hidden="hidden" role="toolbar">
+                                <div class="btn-group me-2" role="group">
+                                    <a asp-page="Details" class="btn border-0">
+                                        <i class="fa fa-pen icon text-primary"></i>
+                                    </a>
+                                </div>
+                                <form class="btn-group me-2" method="post">
+                                    <button class="btn border-0" role="button" asp-page-handler="delete" asp-route-id="@(item.Id.ToString())">
+                                        <i class="fa fa-trash icon text-danger"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content needs-validation" method="post" asp-page-handler="Create">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="staticBackdropLabel">Create new activity</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <input asp-for="Itinerary.Id" hidden="hidden"/>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label asp-for="CreateInput.Title">Title</label>
+                    <input class="form-control" asp-for="CreateInput.Title">
+                    <span asp-validation-for="CreateInput.Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CreateInput.DateTime">Date</label>
+                    <input class="form-control" asp-for="CreateInput.DateTime">
+                    <span asp-validation-for="CreateInput.DateTime" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CreateInput.Description">Description</label>
+                    <textarea class="form-control" asp-for="CreateInput.Description"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CreateInput.Cost">Cost</label>
+                    <input class="form-control" asp-for="CreateInput.Cost">
+                    <span asp-validation-for="CreateInput.Cost" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $('#IndexTable').DataTable({
+        columnDefs: [
+            { orderable: false, targets: 6 }
+        ]
+      });
+    });
+    </script>
+}

@@ -1,4 +1,5 @@
 using ASE3040.Application.Common.Interfaces;
+using ASE3040.Web.Filters;
 using ASE3040.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
@@ -26,6 +27,12 @@ public static class DependencyInjection
                 options.ClientId = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_CLIENT_ID"];
                 options.ClientSecret = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"];
                 options.SaveTokens = true;
+            });
+
+        services.AddRazorPages()
+            .AddMvcOptions(options =>
+            {
+                options.Filters.Add<ExceptionFilters>();
             });
 
         return services;

@@ -4,23 +4,23 @@ using ASE3040.Application.Common.Security;
 
 namespace ASE3040.Application.Features.Activities.Commands.Delete;
 [Authorize]
-public class DeleteItineraryCommand : IRequest<Result>
+public class DeleteActivityCommand : IRequest<Result>
 {
     public int Id { get; set; }
 }
 
-public class DeleteItineraryCommandHandler : IRequestHandler<DeleteItineraryCommand, Result>
+public class DeleteActivityCommandHandler : IRequestHandler<DeleteActivityCommand, Result>
 {
     private readonly IApplicationDbContext _context;
     private readonly IUser _user;
 
-    public DeleteItineraryCommandHandler(IApplicationDbContext context, IUser user)
+    public DeleteActivityCommandHandler(IApplicationDbContext context, IUser user)
     {
         _context = context;
         _user = user;
     }
 
-    public async Task<Result> Handle(DeleteItineraryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteActivityCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Activities
             .Where(x => x.CreatedBy == _user.UserId)

@@ -4,11 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using ASE3040.Application.Features.Itineraries.Commands.Create;
+using ASE3040.Application.Features.Itineraries.Commands.Delete;
 using ASE3040.Application.Features.Itineraries.Queries;
+using ASE3040.Web.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ASE3040.Web.Pages.Itinerary;
 
@@ -51,9 +54,23 @@ public class IndexModel : PageModel
 
         var result = await _mediator.Send(request);
         
+        if (!result.Succeeded)
+        {
+            ModelState.AddResult(result);
+            Itineraries = await _mediator.Send(new GetItineraries());
+            return Page();
+        }
+        
         return RedirectToPage();
     }
 
+    public async Task<IActionResult> OnPostDeleteAsync(DeleteItineraryCommand request)
+    {
+        // TODO: Delete confirmation modal
+        await _mediator.Send(request);
+        return RedirectToPage();
+    }
+    
     public class CreateModel
     {
         [Required]

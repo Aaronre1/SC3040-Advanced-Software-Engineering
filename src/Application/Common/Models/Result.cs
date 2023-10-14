@@ -2,7 +2,8 @@ namespace ASE3040.Application.Common.Models;
 
 public class Result
 {
-    internal Result(bool succeeded, IEnumerable<string> errors)
+    // ReSharper disable once MemberCanBePrivate.Global 
+    public Result(bool succeeded, IEnumerable<string> errors)
     {
         Succeeded = succeeded;
         Errors = errors.ToArray();
