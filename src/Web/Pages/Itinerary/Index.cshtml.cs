@@ -64,9 +64,8 @@ public class IndexModel : PageModel
         return RedirectToPage();
     }
 
-    public async Task<IActionResult> OnPostDeleteAsync(DeleteItineraryCommand request)
+    public async Task<IActionResult> OnPostDeleteAsync([FromQuery]DeleteItineraryCommand request)
     {
-        // TODO: Delete confirmation modal
         await _mediator.Send(request);
         return RedirectToPage();
     }

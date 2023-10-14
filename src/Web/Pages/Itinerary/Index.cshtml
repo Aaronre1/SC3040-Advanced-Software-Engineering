@@ -1,4 +1,5 @@
 ﻿@page
+@using ASE3040.Web.Pages.Shared.Components.ConfirmationDialog
 @model ASE3040.Web.Pages.Itinerary.IndexModel
 @{
     ViewData["Title"] = "Your Itineraries";
@@ -6,7 +7,11 @@
 
 <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
 
-@Html.ValidationSummary()
+@if (Model.ModelState.Any())
+{
+    @await Component.InvokeAsync("ValidationAlert")
+}
+
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -45,24 +50,18 @@
                                         <i class="fa fa-pen icon text-primary"></i>
                                     </a>
                                 </div>
-                                <form class="btn-group me-2" method="post">
-                                    <button class="btn border-0" type="button" role="button" data-bs-toggle="modal" data-bs-target="#deleteModal@(item.Id.ToString())">
+                                <div class="btn-group me-2">
+                                    <button class="btn border-0" type="button" role="button" data-bs-toggle="modal" data-bs-target="#confirmationDialog_@(item.Id.ToString())">
                                         <i class="fa fa-trash icon text-danger"></i>
                                     </button>
-                                    <div id="deleteModal@(item.Id.ToString())" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-header border-bottom-0">
-                                                <h1 class="modal-title fs-5">Confirmation</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body py-0"></div>
-                                            <div class="modal-footer border-top-0">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                                <button type="submit" class="btn btn-primary" asp-page-handler="delete" asp-route-id="@(item.Id.ToString())">Yes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                    @await Component.InvokeAsync("ConfirmationDialog", new ConfirmationDialogViewModel()
+                                           {
+                                               Id = item.Id.ToString(),
+                                               PageHandler = "delete",
+                                               Method = "post",
+                                               Message = $"Delete '{item.Title}' itinerary?"
+                                           })
+                                </div>
                             </div>
                         </td>
                     </tr>

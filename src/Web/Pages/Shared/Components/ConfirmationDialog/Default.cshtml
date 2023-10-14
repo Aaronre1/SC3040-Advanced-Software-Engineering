@@ -1,0 +1,22 @@
+@model ConfirmationDialogViewModel
+
+
+<form id="confirmationDialog_@(Model.Id)" method="@(Model.Method)" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h3 class="modal-title fs-5">Confirmation</h3>
+                <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body py-0" style="text-align: start">
+                <p class="m-2">@(Model.Message)</p>
+            </div>
+            <div class="modal-footer border-top-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button class="btn btn-primary" asp-page-handler="@(Model.PageHandler)" asp-route-id="@(Model.Id)">Yes</button>
+            </div>
+        </div>
+    </div>
+</form>
