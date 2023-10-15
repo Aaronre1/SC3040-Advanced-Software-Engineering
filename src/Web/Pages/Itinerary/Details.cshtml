@@ -1,5 +1,6 @@
 @page
 @using System.Globalization
+@using ASE3040.Web.Pages.Shared.Components.ConfirmationDialog
 @model ASE3040.Web.Pages.Itinerary.Details
 
 @{
@@ -19,6 +20,7 @@
         </ol>
     </nav>
 </div>
+
 @if (!Model.ModelState.IsValid)
 {
     @await Component.InvokeAsync("ValidationAlert")
@@ -35,7 +37,7 @@
                 <div class="text-muted ms-1 mt-1">
                     <i class="far fa-calendar-alt"></i>
                     <span class="ms-1">@from</span>
-                    <span class="mx-1"> - </span>
+                    <span class="ms-1"> - </span>
                     <span class="ms-1">@to</span>
                 </div>
             }
@@ -101,51 +103,17 @@
     }
 </div>
 
-<div class="card">
-    <div class="card-header">
-
-    </div>
+<div class="card mb-4">
     <div class="card-body">
-        <table class="table table-borderless table-hover">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Cost ($)</th>
-                <th scope="col">Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.Itinerary.Activities)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(x => item.Done)</td>
-                    <td>@Html.DisplayFor(x => item.Title)</td>
-                    <td>@Html.DisplayFor(x => item.Cost)</td>
-                    <td>@(item.DateTime.ToString(dateFormat))</td>
-                </tr>
-            }
-            </tbody>
-        </table>
-
-    </div>
-</div>
-
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createActivityModal">Add Activity</button>
-    </div>
-    <div class="card-body">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createActivityModal" id="createActivityButton">Add Activity</button>
         <div class="table-responsive">
-            <table id="IndexTable" class="table table-bordered">
+            <table id="IndexTable" class="table table-borderless">
                 <thead>
                 <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>Title</th>
                     <th>Date</th>
-                    <th>Cost ($)</th>
-                    <th>Done</th>
-                    <th>Modified</th>
+                    <th class="text-end">Cost</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -153,24 +121,45 @@
                 @foreach (var item in Model.Itinerary.Activities)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(x => item.Id)</td>
-                        <td>@Html.DisplayFor(x => item.Title)</td>
-                        <td>@Html.DisplayFor(x => item.DateTime)</td>
-                        <td>@Html.DisplayFor(x => item.Cost)</td>
-                        <td>@Html.DisplayFor(x => item.Done)</td>
-                        <td>@Html.DisplayFor(x => item.LastModified)</td>
                         <td class="text-center">
-                            <div class="btn-toolbar" hidden="hidden" role="toolbar">
-                                <div class="btn-group me-2" role="group">
-                                    <a asp-page="Details" class="btn border-0">
-                                        <i class="fa fa-pen icon text-primary"></i>
-                                    </a>
+                            <form method="post">
+                                <button class="btn border-0 hover-check-circle" role="button"
+                                        asp-page-handler="ToggleActivity"
+                                        asp-route-id="@(item.Id.ToString())"
+                                        asp-route-itineraryId="@(item.ItineraryId.ToString())">
+                                    @if (item.Done)
+                                    {
+                                        <i class="fas fa-check-circle text-primary"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-circle"></i>
+                                    }
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <a style="border-bottom: 2px dotted; text-decoration: none" data-bs-toggle="offcanvas" href="#activityOffcanvas_@(item.Id.ToString())">
+                                @Html.DisplayFor(x => item.Title)
+                            </a>
+                        </td>
+                        <td>@(item.DateTime.ToString(dateFormat))</td>
+                        <td class="text-end">
+                            @(item.Cost.GetValueOrDefault().ToString("C"))
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-toolbar flex-nowrap" role="toolbar">
+                                <div class="btn-group">
+                                    <button class="btn border-0" role="button" data-bs-toggle="modal" data-bs-target="#editActivityModal_@(item.Id.ToString())">
+                                        <i class="fas fa-pen text-primary"></i>
+                                    </button>
                                 </div>
-                                <form class="btn-group me-2" method="post">
-                                    <button class="btn border-0" role="button" asp-page-handler="delete" asp-route-id="@(item.Id.ToString())">
+                                <div class="btn-group">
+                                    <button class="btn border-0" type="button" role="button" data-bs-toggle="modal" data-bs-target="#confirmationDialog_@(item.Id.ToString())">
                                         <i class="fa fa-trash icon text-danger"></i>
                                     </button>
-                                </form>
+
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -213,14 +202,13 @@
             </div>
         </form>
     </div>
-
 </div>
 
-<div class="modal fade" id="createActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="createActivityModal" tabindex="-1" aria-hidden="true" aria-labelledby="createActivityModalLabel">
     <div class="modal-dialog">
         <form class="modal-content needs-validation" method="post" asp-page-handler="CreateActivity">
             <div class="modal-header">
-                <h3 class="modal-title fs-5" id="staticBackdropLabel">Create new activity</h3>
+                <h3 class="modal-title fs-5" id="createActivityModalLabel">Add new activity</h3>
                 <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal" aria-label="Close">
                     <i class="fas fa-times"></i>
                 </button>
@@ -255,6 +243,112 @@
     </div>
 </div>
 
+@foreach (var item in Model.Itinerary.Activities)
+{
+    // Details
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="activityOffcanvas_@(item.Id.ToString())">
+        <div class="offcanvas-header bg-primary">
+            <h2 class="offcanvas-title text-light">
+                <i class="fas fa-map-marked-alt"></i>
+                <span class="ms-1">@Html.DisplayFor(x => item.Title)</span>
+            </h2>
+            <button type="button" class="btn btn-outline-light border-0" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="offcanvas-body" style="background: rgb(248, 249, 252)">
+            <div class="alert alert-light" role="alert">
+                <h5>
+                    <i class="far fa-calendar-alt"></i>
+                    <span class="ms-1">@item.DateTime.ToString(dateFormat)</span>
+                </h5>
+            </div>
+            @if (!string.IsNullOrEmpty(item.Description))
+            {
+                <div class="alert alert-light" role="alert">
+                    <h5>
+                        <i class="far fa-sticky-note"></i>
+                        <span class="ms-1">Description</span>
+                    </h5>
+                    @Html.DisplayFor(x => item.Description)
+                </div>
+            }
+            @if (item.Cost.HasValue)
+            {
+                <div class="alert alert-light" role="alert">
+                    <h5>
+                        <i class="fas fa-money-check-alt"></i>
+                        <span class="ms-1">Cost</span>
+                    </h5>
+                    @item.Cost.Value.ToString("C")
+                </div>
+            }
+            @if (item.LastModified.HasValue)
+            {
+                <div class="p-3" style="position: absolute; bottom: 0;">
+                    <small>Last Modified @item.LastModified.Value.ToString(dateFormat)</small>
+                </div>
+            }
+        </div>
+    </div>
+
+    // Edit
+    <div class="modal fade" id="editActivityModal_@(item.Id.ToString())" tabindex="-1" aria-hidden="true" aria-labelledby="editActivityModalLabel_@(item.Id.ToString())">
+        <div class="modal-dialog">
+            <form class="modal-content needs-validation" method="post" asp-page-handler="EditActivity">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="editActivityModalLabel_@(item.Id.ToString())">Edit Activity</h3>
+                    <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <input asp-for="Itinerary.Id" hidden="hidden"/>
+                    <input asp-for="EditActivity.Id" value="@item.Id" hidden="hidden"/>
+                    <input name="@Html.NameFor(x => x.EditActivity.Done)" value="@item.Done.ToString()" hidden="hidden"/>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="EditActivity.Title">Title</label>
+                        <input class="form-control" asp-for="EditActivity.Title" value="@item.Title">
+                        <span asp-validation-for="EditActivity.Title" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditActivity.DateTime">Date</label>
+                        <input class="form-control" asp-for="EditActivity.DateTime" value="@item.DateTime.ToString("yyyy-MM-ddTHH:mm")">
+                        <span asp-validation-for="EditActivity.DateTime" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditActivity.Description">Description</label>
+                        <textarea class="form-control" name="@Html.NameFor(x => x.EditActivity.Description)">@item.Description</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="EditActivity.Cost">Cost</label>
+                        <input class="form-control" asp-for="EditActivity.Cost" value="@item.Cost">
+                        <span asp-validation-for="EditActivity.Cost" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    // Delete
+    @await Component.InvokeAsync("ConfirmationDialog", new ConfirmationDialogViewModel
+           {
+               Id = item.Id.ToString(),
+               PageHandler = "DeleteActivity",
+               Method = "post",
+               Message = $"Delete '{item.Title}' from itinerary?",
+               RouteValues =
+               {
+                   { "Id", item.Id.ToString() },
+                   { "ItineraryId", item.ItineraryId.ToString() }
+               }
+           })
+}
+
 
 @section Scripts
 {
@@ -264,10 +358,16 @@
     <script type="text/javascript">
     $(document).ready(function() {
       $('#IndexTable').DataTable({
+        dom: '<"d-flex justify-content-between"<"#buttons">f>rtip',
         columnDefs: [
-            { orderable: false, targets: 6 }
-        ]
+            { orderable: false, targets: [0, 4] },
+        ],
+        order: [[3, 'desc']],
+        paging: false,
+        buttons: [ 'copy' ]
       });
+      
+      $('#buttons').append($('#createActivityButton'));
     });
     </script>
 }

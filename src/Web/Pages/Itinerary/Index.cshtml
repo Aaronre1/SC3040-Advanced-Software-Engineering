@@ -58,7 +58,11 @@
                                                Id = item.Id.ToString(),
                                                PageHandler = "delete",
                                                Method = "post",
-                                               Message = $"Delete '{item.Title}' itinerary?"
+                                               Message = $"Delete '{item.Title}' itinerary?",
+                                               RouteValues =
+                                               {
+                                                   { "Id", item.Id.ToString() }
+                                               }
                                            })
                                 </div>
                             </div>

@@ -1,4 +1,6 @@
 using ASE3040.Application.Features.Activities.Commands.Create;
+using ASE3040.Application.Features.Activities.Commands.Delete;
+using ASE3040.Application.Features.Activities.Commands.Edit;
 using ASE3040.Application.Features.Itineraries.Commands.Edit;
 using ASE3040.Application.Features.Itineraries.Queries;
 using ASE3040.Web.Extensions;
@@ -18,10 +20,10 @@ public class Details : PageModel
         _mediator = mediator;
     }
 
-    public ItineraryDto Itinerary { get; set; } = default!;
-
+    [BindProperty] public ItineraryDto Itinerary { get; set; } = default!;
     [BindProperty] public EditItineraryCommand EditItinerary { get; set; }
     [BindProperty] public CreateActivityCommand CreateActivity { get; set; }
+    [BindProperty] public EditActivityCommand EditActivity { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
@@ -60,5 +62,46 @@ public class Details : PageModel
         }
 
         return RedirectToPage("Details", new { Id = CreateActivity.ItineraryId });
+    }
+
+    public async Task<IActionResult> OnPostToggleActivity([FromQuery] ToggleActivityCommand request,
+        [FromQuery] int itineraryId)
+    {
+        var result = await _mediator.Send(request);
+
+        if (!result.Succeeded)
+        {
+            ModelState.AddResult(result);
+            return await OnGetAsync(itineraryId);
+        }
+
+        return RedirectToPage("Details", new { Id = itineraryId });
+    }
+
+    public async Task<IActionResult> OnPostEditActivity()
+    {
+        var result = await _mediator.Send(EditActivity);
+
+        if (!result.Succeeded)
+        {
+            ModelState.AddResult(result);
+            return await OnGetAsync(Itinerary.Id);
+        }
+
+        return RedirectToPage("Details", new { Itinerary.Id });
+    }
+
+    public async Task<IActionResult> OnPostDeleteActivity([FromQuery] DeleteActivityCommand request,
+        [FromQuery] int itineraryId)
+    {
+        var result = await _mediator.Send(request);
+
+        if (!result.Succeeded)
+        {
+            ModelState.AddResult(result);
+            return await OnGetAsync(itineraryId);
+        }
+
+        return RedirectToPage("Details", new { Id = itineraryId });
     }
 }

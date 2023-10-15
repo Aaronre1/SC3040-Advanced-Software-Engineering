@@ -13,6 +13,19 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+.table td{
+  vertical-align: middle;
 }
+
+.hover-check-circle:hover .fa-circle:before{
+  content: '\f192';
+  color: #0a53be;
+  font-weight: 900;
+}
+
+.hover-check-circle:hover .fa-check-circle:before{
+  content: '\f192';
+  color: #0a53be;
+  font-weight: 400;
+}
+
