@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using ASE3040.Application.Common.Interfaces;
 using ASE3040.Application.Common.Models;
 using ASE3040.Application.Common.Security;
@@ -9,8 +10,10 @@ namespace ASE3040.Application.Features.Activities.Commands.Create;
 public class CreateActivityCommand : IRequest<Result>
 {
     public int ItineraryId { get; set; }
+    [Required]
     public string? Title { get; set; }
     public string? Description { get; set; }
+    [Required]
     public DateTime? DateTime { get; set; }
     public decimal? Cost { get; set; }
 }

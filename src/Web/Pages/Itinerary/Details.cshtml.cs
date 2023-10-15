@@ -17,15 +17,12 @@ public class Details : PageModel
     {
         _mediator = mediator;
     }
-    [BindProperty]
+
     public ItineraryDto Itinerary { get; set; } = default!;
-    
-    [BindProperty]
-    public EditItineraryCommand EditItinerary { get; set; }
-    
-    [BindProperty]
-    public CreateActivityCommand CreateInput { get; set; }
-    
+
+    [BindProperty] public EditItineraryCommand EditItinerary { get; set; }
+    [BindProperty] public CreateActivityCommand CreateActivity { get; set; }
+
     public async Task<IActionResult> OnGetAsync(int id)
     {
         var results = await _mediator.Send(new GetItineraries());
@@ -41,11 +38,6 @@ public class Details : PageModel
 
     public async Task<IActionResult> OnPostEdit()
     {
-        if (!ModelState.IsValid)
-        {
-           return await OnGetAsync(EditItinerary.Id);
-        }
-
         var result = await _mediator.Send(EditItinerary);
 
         if (!result.Succeeded)
@@ -53,22 +45,20 @@ public class Details : PageModel
             ModelState.AddResult(result);
             return await OnGetAsync(EditItinerary.Id);
         }
-        
-        return RedirectToPage($"Details", new {EditItinerary.Id});
+
+        return RedirectToPage("Details", new { EditItinerary.Id });
     }
 
-    public async Task<IActionResult> OnPostCreate()
+    public async Task<IActionResult> OnPostCreateActivity()
     {
-        if (!ModelState.IsValid)
+        var result = await _mediator.Send(CreateActivity);
+
+        if (!result.Succeeded)
         {
-            return Page();
+            ModelState.AddResult(result);
+            return await OnGetAsync(CreateActivity.ItineraryId);
         }
 
-        // TODO: Return error model
-        CreateInput.ItineraryId = Itinerary.Id;
-        var result = await _mediator.Send(CreateInput);
-        
-        return RedirectToPage($"Details", new {Itinerary.Id});
+        return RedirectToPage("Details", new { Id = CreateActivity.ItineraryId });
     }
-
 }

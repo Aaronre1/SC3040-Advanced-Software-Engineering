@@ -4,6 +4,8 @@ public class CreateActivityCommandValidator : AbstractValidator<CreateActivityCo
 {
     public CreateActivityCommandValidator()
     {
+        RuleFor(x => x.Title).NotEmpty();
+        
         RuleFor(x => x.DateTime).NotNull();
         
         When(x => x.Cost.HasValue, () => { RuleFor(x => x.Cost).GreaterThan(0); });

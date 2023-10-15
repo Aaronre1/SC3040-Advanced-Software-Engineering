@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = Model.Itinerary.Title;
+    const string dateFormat = "dd MMM yyyy hh:mm tt";
 }
 <div class="d-flex justify-content-between align-items-center my-2 flex-wrap">
     <h2 class="me-auto mb-0 text-gray-800">
@@ -29,8 +30,8 @@
             <h2 class="me-auto mb-0 text-gray-800">@ViewData["Title"]</h2>
             @if (Model.Itinerary.From.HasValue && Model.Itinerary.To.HasValue)
             {
-                var from = Model.Itinerary.From.Value.ToString("dd MMM yyyy hh:mm tt");
-                var to = Model.Itinerary.To.Value.ToString("dd MMM yyyy hh:mm tt");
+                var from = Model.Itinerary.From.Value.ToString(dateFormat);
+                var to = Model.Itinerary.To.Value.ToString(dateFormat);
                 <div class="text-muted ms-1 mt-1">
                     <i class="far fa-calendar-alt"></i>
                     <span class="ms-1">@from</span>
@@ -100,9 +101,39 @@
     }
 </div>
 
+<div class="card">
+    <div class="card-header">
+
+    </div>
+    <div class="card-body">
+        <table class="table table-borderless table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Cost ($)</th>
+                <th scope="col">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Itinerary.Activities)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(x => item.Done)</td>
+                    <td>@Html.DisplayFor(x => item.Title)</td>
+                    <td>@Html.DisplayFor(x => item.Cost)</td>
+                    <td>@(item.DateTime.ToString(dateFormat))</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Add Activity</button>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createActivityModal">Add Activity</button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -185,35 +216,35 @@
 
 </div>
 
-<div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="createActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="modal-content needs-validation" method="post" asp-page-handler="Create">
+        <form class="modal-content needs-validation" method="post" asp-page-handler="CreateActivity">
             <div class="modal-header">
                 <h3 class="modal-title fs-5" id="staticBackdropLabel">Create new activity</h3>
                 <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal" aria-label="Close">
                     <i class="fas fa-times"></i>
                 </button>
-                <input asp-for="Itinerary.Id" hidden="hidden"/>
+                <input asp-for="CreateActivity.ItineraryId" value="@Model.Itinerary.Id" hidden="hidden"/>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label asp-for="CreateInput.Title">Title</label>
-                    <input class="form-control" asp-for="CreateInput.Title">
-                    <span asp-validation-for="CreateInput.Title" class="text-danger"></span>
+                    <label asp-for="CreateActivity.Title">Title</label>
+                    <input class="form-control" asp-for="CreateActivity.Title">
+                    <span asp-validation-for="CreateActivity.Title" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="CreateInput.DateTime">Date</label>
-                    <input class="form-control" asp-for="CreateInput.DateTime">
-                    <span asp-validation-for="CreateInput.DateTime" class="text-danger"></span>
+                    <label asp-for="CreateActivity.DateTime">Date</label>
+                    <input class="form-control" asp-for="CreateActivity.DateTime">
+                    <span asp-validation-for="CreateActivity.DateTime" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="CreateInput.Description">Description</label>
-                    <textarea class="form-control" asp-for="CreateInput.Description"></textarea>
+                    <label asp-for="CreateActivity.Description">Description</label>
+                    <textarea class="form-control" asp-for="CreateActivity.Description"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="CreateInput.Cost">Cost</label>
-                    <input class="form-control" asp-for="CreateInput.Cost">
-                    <span asp-validation-for="CreateInput.Cost" class="text-danger"></span>
+                    <label asp-for="CreateActivity.Cost">Cost</label>
+                    <input class="form-control" asp-for="CreateActivity.Cost">
+                    <span asp-validation-for="CreateActivity.Cost" class="text-danger"></span>
                 </div>
             </div>
             <div class="modal-footer">
