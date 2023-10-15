@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using ASE3040.Application.Common.Interfaces;
 using ASE3040.Application.Common.Models;
 using ASE3040.Application.Common.Security;
@@ -7,9 +8,12 @@ namespace ASE3040.Application.Features.Itineraries.Commands.Edit;
 [Authorize]
 public class EditItineraryCommand : IRequest<Result>
 {
+    [Required]
     public int Id { get; set; }
+    [Required]
     public string? Title { get; set; }
     public string? Description { get; set; }
+    [DataType(DataType.Currency)]
     public decimal? Budget { get; set; }
 }
 

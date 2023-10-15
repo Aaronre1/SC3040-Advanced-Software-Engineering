@@ -1,18 +1,103 @@
 @page
+@using System.Globalization
 @model ASE3040.Web.Pages.Itinerary.Details
 
 @{
     ViewData["Title"] = Model.Itinerary.Title;
 }
-
 <div class="d-flex justify-content-between align-items-center my-2 flex-wrap">
-    <h2 class="me-auto mb-0 text-gray-800">@ViewData["Title"]</h2>
+    <h2 class="me-auto mb-0 text-gray-800">
+        <i class="fas fa-plane-departure"></i>
+    </h2>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb float-end mb-0">
-            <li class="breadcrumb-item"><a asp-page="Index">Itineraries</a></li>
+            <li class="breadcrumb-item">
+                <a asp-page="Index">Itineraries</a>
+            </li>
             <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
         </ol>
     </nav>
+</div>
+@if (!Model.ModelState.IsValid)
+{
+    @await Component.InvokeAsync("ValidationAlert")
+}
+
+<div class="my-3">
+    <div class="d-flex justify-content-between align-items-end my-2 flex-wrap">
+        <div>
+            <h2 class="me-auto mb-0 text-gray-800">@ViewData["Title"]</h2>
+            @if (Model.Itinerary.From.HasValue && Model.Itinerary.To.HasValue)
+            {
+                var from = Model.Itinerary.From.Value.ToString("dd MMM yyyy hh:mm tt");
+                var to = Model.Itinerary.To.Value.ToString("dd MMM yyyy hh:mm tt");
+                <div class="text-muted ms-1 mt-1">
+                    <i class="far fa-calendar-alt"></i>
+                    <span class="ms-1">@from</span>
+                    <span class="mx-1"> - </span>
+                    <span class="ms-1">@to</span>
+                </div>
+            }
+        </div>
+
+        <a class="btn py-0" data-bs-toggle="modal" data-bs-target="#editModal">
+            Edit
+        </a>
+    </div>
+
+    <hr/>
+    @if (!string.IsNullOrEmpty(Model.Itinerary.Description))
+    {
+        <div class="alert alert-light" role="alert">
+            <h5>
+                <i class="far fa-sticky-note"></i>
+                <span class="ms-1">Description</span>
+            </h5>
+            @Html.DisplayFor(x => x.Itinerary.Description)
+        </div>
+    }
+    @if (Model.Itinerary.Budget.HasValue)
+    {
+        var expenses = Model.Itinerary.Expenses ?? 0;
+        var budget = Model.Itinerary.Budget ?? 0;
+        var remaining = budget - expenses;
+        var percent = 0M;
+        if (budget != 0)
+        {
+            percent = (expenses / budget) * 100;
+        }
+        var barColor = "bg-success";
+        var barWidth = percent;
+        if (percent > 100)
+        {
+            barWidth = 100;
+            barColor = "bg-danger";
+        }
+
+        <div class="alert alert-light">
+            <h5>
+                <i class="fas fa-money-check-alt"></i>
+                <span class="ms-1">Budget</span>
+            </h5>
+            <div class="progress" role="progressbar" aria-label="budget" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar @barColor" style="width: @barWidth.ToString(CultureInfo.InvariantCulture)%">
+                    @(percent.ToString("0.##"))%
+                </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-2 flex-wrap">
+                <div>
+                    @(expenses.ToString("C"))
+                    <span class="ms-1">spent / </span>
+                    @(remaining.ToString("C"))
+                    <span class="ms-1">remaining</span>
+                </div>
+                <div>
+                    @(budget.ToString("C"))
+                    <span class="ms-1"></span>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 <div class="card shadow mb-4">
@@ -65,12 +150,49 @@
     </div>
 </div>
 
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true" aria-labelledby="editModalLabel">
+    <div class="modal-dialog">
+        <form class="modal-content" method="post" asp-page-handler="Edit">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="editModalLabel">Edit Itinerary</h3>
+                <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+                <input asp-for="EditItinerary.Id" value="@Model.Itinerary.Id" hidden="hidden"/>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label asp-for="EditItinerary.Title">Title</label>
+                    <input class="form-control" asp-for="EditItinerary.Title" value="@Model.Itinerary.Title">
+                    <span asp-validation-for="EditItinerary.Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EditItinerary.Budget">Budget ($)</label>
+                    <input class="form-control" asp-for="EditItinerary.Budget" value="@Model.Itinerary.Budget">
+                    <span asp-validation-for="EditItinerary.Budget" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EditItinerary.Description">Description</label>
+                    <textarea class="form-control" name="@Html.NameFor(x => x.EditItinerary.Description)">@Model.Itinerary.Description</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
 <div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form class="modal-content needs-validation" method="post" asp-page-handler="Create">
             <div class="modal-header">
                 <h3 class="modal-title fs-5" id="staticBackdropLabel">Create new activity</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn btn-outline-secondary border-0" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
                 <input asp-for="Itinerary.Id" hidden="hidden"/>
             </div>
             <div class="modal-body">

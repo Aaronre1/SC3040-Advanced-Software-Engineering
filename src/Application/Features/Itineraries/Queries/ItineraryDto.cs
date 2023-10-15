@@ -9,6 +9,7 @@ public class ItineraryDto
 
     public int Id { get; init; }
     public string? Title { get; init; }
+    public string? Description { get; init; }
     public decimal? Budget { get; init; }
     public IReadOnlyCollection<ActivityDto> Activities { get; init; }
     public DateTime? From { get; init; }

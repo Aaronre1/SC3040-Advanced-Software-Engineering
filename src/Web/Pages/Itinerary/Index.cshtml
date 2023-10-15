@@ -7,7 +7,7 @@
 
 <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
 
-@if (Model.ModelState.Any())
+@if (!Model.ModelState.IsValid)
 {
     @await Component.InvokeAsync("ValidationAlert")
 }
