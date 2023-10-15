@@ -4,8 +4,8 @@ namespace ASE3040.Web.Pages.Shared.Components.ValidationAlert;
 
 public class ValidationAlertViewComponent : ViewComponent
 {
-    public async Task<IViewComponentResult> InvokeAsync()
+    public Task<IViewComponentResult> InvokeAsync()
     {
-        return View();
+        return Task.FromResult<IViewComponentResult>(View());
     }
 }

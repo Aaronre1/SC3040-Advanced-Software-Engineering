@@ -15,7 +15,7 @@ public class IndexModel : PageModel
         _mediator = mediator;
     }
 
-    public async Task OnGetAsync()
+    public void OnGet()
     {
     }
 }

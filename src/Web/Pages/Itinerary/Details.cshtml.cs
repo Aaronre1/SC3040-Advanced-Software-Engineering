@@ -21,9 +21,9 @@ public class Details : PageModel
     }
 
     [BindProperty] public ItineraryDto Itinerary { get; set; } = default!;
-    [BindProperty] public EditItineraryCommand EditItinerary { get; set; }
-    [BindProperty] public CreateActivityCommand CreateActivity { get; set; }
-    [BindProperty] public EditActivityCommand EditActivity { get; set; }
+    [BindProperty] public EditItineraryCommand EditItinerary { get; set; } = default!;
+    [BindProperty] public CreateActivityCommand CreateActivity { get; set; } = default!;
+    [BindProperty] public EditActivityCommand EditActivity { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int id)
     {

@@ -24,8 +24,8 @@ public static class DependencyInjection
             .AddCookie()
             .AddMicrosoftAccount(options =>
             {
-                options.ClientId = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_CLIENT_ID"];
-                options.ClientSecret = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"];
+                options.ClientId = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_CLIENT_ID"]!;
+                options.ClientSecret = configuration["MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"]!;
                 options.SaveTokens = true;
             });
 

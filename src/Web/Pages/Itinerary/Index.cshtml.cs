@@ -19,11 +19,11 @@ public class IndexModel : PageModel
     {
         _mediator = mediator;
     }
-    
-    public IEnumerable<ItineraryDto> Itineraries { get; set; }
+
+    public IEnumerable<ItineraryDto> Itineraries { get; set; } = default!;
     
     [BindProperty]
-    public CreateModel CreateInput { get; set; }
+    public CreateModel CreateInput { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync()
     {

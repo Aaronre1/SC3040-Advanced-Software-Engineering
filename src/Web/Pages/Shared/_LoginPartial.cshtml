@@ -2,7 +2,9 @@
 
 
 <ul class="navbar-nav">
-    @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+    @if (HttpContextAccessor.HttpContext != null &&
+         HttpContextAccessor.HttpContext.User.Identity != null &&
+         HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
             <span class="nav-link text-dark">@User.Identity?.Name</span>
