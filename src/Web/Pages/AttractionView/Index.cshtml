@@ -49,7 +49,6 @@
         font-size: 18px;
     }
 </style>
-@* @@Aaron, help see why unable to call when added to layout.cshtml *@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <div id="search-container">
     <i class="fa fa-search icon" id="search-icon"></i>
@@ -66,7 +65,7 @@
             {
                 type: ['establishment'],
                 //componentRestrictions: { 'country': ['AU'] }, enable global
-                fields: ['place_id', 'geometry', 'name', 'photos', 'rating', 'user_ratings_total', 'website']
+                fields: ['place_id', 'geometry', 'name', 'photos', 'rating', 'user_ratings_total', 'website','formatted_address','adr_address']
             });
 
         autocomplete.addListener("place_changed", onPlaceChanged);
@@ -88,7 +87,7 @@
                 if (status === google.maps.places.PlacesServiceStatus.OK && results[0]) {
                     const request = {
                         placeId: results[0].place_id,
-                        fields: ["name", "photos", "rating", "user_ratings_total", "website"]
+                        fields: ["name", "photos", "rating", "user_ratings_total", "website","formatted_address","adr_address"]
                     };
 
                     placesService.getDetails(request, function (place, status) {
@@ -112,7 +111,7 @@
 
         if (place.photos && place.photos.length > 0) {
             place.photos.forEach((photo) => {
-                appendImageAndButton(photo, photoContainer);
+                appendImageAndButton(photo, photoContainer,place.formatted_address);
             });
         }
     }
@@ -123,12 +122,12 @@
 
         if (place.photos && place.photos.length > 0) {
             place.photos.forEach((photo) => {
-                appendImageAndButton(photo, photoContainer);
+                appendImageAndButton(photo, photoContainer,place.formatted_address);
             });
         }
     }
 
-    function appendImageAndButton(photo, photoContainer) {
+    function appendImageAndButton(photo, photoContainer,address) {
         const imageDiv = document.createElement('div');
         imageDiv.className = 'image-wrapper';
 
@@ -140,7 +139,8 @@
         const viewMoreButton = document.createElement('button');
         viewMoreButton.innerText = 'View More';
         viewMoreButton.onclick = function () {
-            alert("clicked");
+            //get the address of the place
+            alert(address);
         };
 
         imageDiv.appendChild(imgElement);
