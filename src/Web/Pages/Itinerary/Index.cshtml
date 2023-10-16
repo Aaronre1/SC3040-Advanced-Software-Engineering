@@ -3,78 +3,132 @@
 @model ASE3040.Web.Pages.Itinerary.IndexModel
 @{
     ViewData["Title"] = "Your Itineraries";
+    const string dateFormat = "dd MMM yyyy hh:mm tt";
+    const string dateOnlyFormat = "dd MMM yyyy";
 }
-
-<h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
-
 @if (!Model.ModelState.IsValid)
 {
     @await Component.InvokeAsync("ValidationAlert")
 }
-
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="IndexTable" class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Budget ($)</th>
-                    <th>Expenses ($)</th>
-                    <th>Modified</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model.Itineraries)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(x => item.Id)</td>
-                        <td>@Html.DisplayFor(x => item.Title)</td>
-                        <td>@Html.DisplayFor(x => item.From)</td>
-                        <td>@Html.DisplayFor(x => item.To)</td>
-                        <td>@Html.DisplayFor(x => item.Budget)</td>
-                        <td>@Html.DisplayFor(x => item.Expenses)</td>
-                        <td>@Html.DisplayFor(x => item.LastModified)</td>
-                        <td class="text-center">
-                            <div class="btn-toolbar flex-nowrap" role="toolbar">
-                                <div class="btn-group me-2" role="group">
-                                    <a asp-page="Details" asp-route-id="@(item.Id.ToString())" class="btn border-0">
-                                        <i class="fa fa-pen icon text-primary"></i>
-                                    </a>
-                                </div>
-                                <div class="btn-group me-2">
-                                    <button class="btn border-0" type="button" role="button" data-bs-toggle="modal" data-bs-target="#confirmationDialog_@(item.Id.ToString())">
-                                        <i class="fa fa-trash icon text-danger"></i>
-                                    </button>
-                                    @await Component.InvokeAsync("ConfirmationDialog", new ConfirmationDialogViewModel()
-                                           {
-                                               Id = item.Id.ToString(),
-                                               PageHandler = "delete",
-                                               Method = "post",
-                                               Message = $"Delete '{item.Title}' itinerary?",
-                                               RouteValues =
-                                               {
-                                                   { "Id", item.Id.ToString() }
-                                               }
-                                           })
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+<div class="container my-3">
+    <div class="d-flex justify-content-between align-items-end flex-wrap">
+        <h2 class="mb-0 text-gray-800">@ViewData["Title"]</h2>
+        <div>
+            <a class="btn py-0" data-bs-toggle="modal" data-bs-target="#createModal">
+                Add Activity
+            </a>
         </div>
     </div>
+    <hr/>
+    <div class="row row-cols-1 row-cols-sm-2 g-3">
+        @foreach (var item in Model.Itineraries)
+        {
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <a class="h5" style="border-bottom: 2px dotted; text-decoration: none;" asp-page="Details" asp-route-id="@(item.Id.ToString())">
+                            @Html.DisplayFor(x => item.Title)
+                        </a>
+                        @if (item.From.HasValue && item.To.HasValue)
+                        {
+                            <div class="text-muted mt-2">
+                                <i class="far fa-calendar-alt fa-fw"></i>
+                                <span class="ms-1">@item.From.Value.ToString(dateOnlyFormat)</span>
+                                <span class="ms-1"> - </span>
+                                <span class="ms-1">@item.To.Value.ToString(dateOnlyFormat)</span>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(item.Description))
+                        {
+                            <div class="mt-2">
+                                <i class="far fa-sticky-note fa-fw"></i>
+                                @Html.DisplayFor(x => item.Description)
+                            </div>
+                        }
+                        @if (item.Budget.HasValue)
+                        {
+                            decimal expenses = item.Expenses ?? 0;
+                            decimal budget = item.Budget ?? 0;
+                            <div class="mt-2">
+                                <i class="fas fa-money-check-alt fa-fw"></i>
+                                @expenses.ToString("C") / @budget.ToString("C")
+                            </div>
+                        }
+                        @if (item.LastModified.HasValue)
+                        {
+                            <div class="mt-2">
+                                <small class="text-body-secondary">Last Modified @item.LastModified.Value.ToString(dateFormat)</small>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
-
+@* <div class="card shadow mb-4"> *@
+@*     <div class="card-header py-3"> *@
+@*         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Create</button> *@
+@*     </div> *@
+@*     <div class="card-body"> *@
+@*         <div class="table-responsive"> *@
+@*             <table id="IndexTable" class="table table-bordered"> *@
+@*                 <thead> *@
+@*                 <tr> *@
+@*                     <th>#</th> *@
+@*                     <th>Title</th> *@
+@*                     <th>Start</th> *@
+@*                     <th>End</th> *@
+@*                     <th>Budget ($)</th> *@
+@*                     <th>Expenses ($)</th> *@
+@*                     <th>Modified</th> *@
+@*                     <th></th> *@
+@*                 </tr> *@
+@*                 </thead> *@
+@*                 <tbody> *@
+@*                 @foreach (var item in Model.Itineraries) *@
+@*                 { *@
+@*                     <tr> *@
+@*                         <td>@Html.DisplayFor(x => item.Id)</td> *@
+@*                         <td>@Html.DisplayFor(x => item.Title)</td> *@
+@*                         <td>@Html.DisplayFor(x => item.From)</td> *@
+@*                         <td>@Html.DisplayFor(x => item.To)</td> *@
+@*                         <td>@Html.DisplayFor(x => item.Budget)</td> *@
+@*                         <td>@Html.DisplayFor(x => item.Expenses)</td> *@
+@*                         <td>@Html.DisplayFor(x => item.LastModified)</td> *@
+@*                         <td class="text-center"> *@
+@*                             <div class="btn-toolbar flex-nowrap" role="toolbar"> *@
+@*                                 <div class="btn-group me-2" role="group"> *@
+@*                                     <a asp-page="Details" asp-route-id="@(item.Id.ToString())" class="btn border-0"> *@
+@*                                         <i class="fa fa-pen icon text-primary"></i> *@
+@*                                     </a> *@
+@*                                 </div> *@
+@*                                 <div class="btn-group me-2"> *@
+@*                                     <button class="btn border-0" type="button" role="button" data-bs-toggle="modal" data-bs-target="#confirmationDialog_@(item.Id.ToString())"> *@
+@*                                         <i class="fa fa-trash icon text-danger"></i> *@
+@*                                     </button> *@
+@*                                     @await Component.InvokeAsync("ConfirmationDialog", new ConfirmationDialogViewModel() *@
+@*                                            { *@
+@*                                                Id = item.Id.ToString(), *@
+@*                                                PageHandler = "delete", *@
+@*                                                Method = "post", *@
+@*                                                Message = $"Delete '{item.Title}' itinerary?", *@
+@*                                                RouteValues = *@
+@*                                                { *@
+@*                                                    { "Id", item.Id.ToString() } *@
+@*                                                } *@
+@*                                            }) *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         </td> *@
+@*                     </tr> *@
+@*                 } *@
+@*                 </tbody> *@
+@*             </table> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+@* *@
 
 <div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">

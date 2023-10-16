@@ -42,10 +42,28 @@
                 </div>
             }
         </div>
+        <div>
+            <a class="btn py-0" data-bs-toggle="modal" data-bs-target="#editModal">
+                Edit
+            </a>
+            |
+            <a class="btn py-0 " data-bs-toggle="modal" href="#confirmationDialog_@(Model.Itinerary.Id.ToString())">
+                Delete
+            </a>
+        </div>
 
-        <a class="btn py-0" data-bs-toggle="modal" data-bs-target="#editModal">
-            Edit
-        </a>
+
+        @await Component.InvokeAsync("ConfirmationDialog", new ConfirmationDialogViewModel
+               {
+                   Id = Model.Itinerary.Id.ToString(),
+                   PageHandler = "delete",
+                   Method = "post",
+                   Message = $"Delete '{Model.Itinerary.Title}' itinerary?",
+                   RouteValues =
+                   {
+                       { "Id", Model.Itinerary.Id.ToString() }
+                   }
+               })
     </div>
 
     <hr/>

@@ -57,12 +57,6 @@ public class IndexModel : PageModel
         
         return RedirectToPage();
     }
-
-    public async Task<IActionResult> OnPostDeleteAsync([FromQuery]DeleteItineraryCommand request)
-    {
-        await _mediator.Send(request);
-        return RedirectToPage();
-    }
     
     public class CreateModel
     {

@@ -1,6 +1,7 @@
 using ASE3040.Application.Features.Activities.Commands.Create;
 using ASE3040.Application.Features.Activities.Commands.Delete;
 using ASE3040.Application.Features.Activities.Commands.Edit;
+using ASE3040.Application.Features.Itineraries.Commands.Delete;
 using ASE3040.Application.Features.Itineraries.Commands.Edit;
 using ASE3040.Application.Features.Itineraries.Queries;
 using ASE3040.Web.Extensions;
@@ -49,6 +50,12 @@ public class Details : PageModel
         }
 
         return RedirectToPage("Details", new { EditItinerary.Id });
+    }
+    
+    public async Task<IActionResult> OnPostDeleteAsync([FromQuery]DeleteItineraryCommand request)
+    {
+        await _mediator.Send(request);
+        return RedirectToPage("Index");
     }
 
     public async Task<IActionResult> OnPostCreateActivity()
