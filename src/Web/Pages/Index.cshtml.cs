@@ -5,11 +5,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASE3040.Web.Pages;
 
-[Authorize]
+[AllowAnonymous]
 public class IndexModel : PageModel
 {
     public void OnGet()
     {
+    }
+
+    public async Task<IActionResult> OnGetLogoutAsync()
+    {
+        await HttpContext.SignOutAsync();
+        return RedirectToPage();
     }
 
     public async Task<IActionResult> OnPostAsync()
