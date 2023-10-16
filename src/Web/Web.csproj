@@ -32,6 +32,7 @@
     <_ContentIncludedByDefault Remove="Areas\Identity\Login.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Identity\SignedOut.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Shared\Components\Breadcrumb\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\demo\datatables-demo.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Calender\" />
