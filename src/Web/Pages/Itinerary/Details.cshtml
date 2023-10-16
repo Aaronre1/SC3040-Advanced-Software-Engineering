@@ -1,7 +1,7 @@
 @page
-@using System.Globalization
 @using ASE3040.Web.Pages.Shared.Components.ConfirmationDialog
-@model ASE3040.Web.Pages.Itinerary.Details
+@using System.Globalization
+@model Details
 
 @{
     ViewData["Title"] = Model.Itinerary.Title;
@@ -51,7 +51,6 @@
                 Delete
             </a>
         </div>
-
 
         @await Component.InvokeAsync("ConfirmationDialog", new ConfirmationDialogViewModel
                {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ASE3040.Application.Common.Models;
 using ASE3040.Application.Features.Itineraries.Commands.Create;
-using ASE3040.Application.Features.Itineraries.Commands.Delete;
 using ASE3040.Application.Features.Itineraries.Queries;
 using ASE3040.Web.Extensions;
 using MediatR;
@@ -21,7 +21,7 @@ public class IndexModel : PageModel
     }
 
     public IEnumerable<ItineraryDto> Itineraries { get; set; } = default!;
-    
+
     [BindProperty]
     public CreateModel CreateInput { get; set; } = default!;
 
@@ -38,7 +38,7 @@ public class IndexModel : PageModel
             Itineraries = await _mediator.Send(new GetItineraries());
             return Page();
         }
-        
+
         var request = new CreateItineraryCommand()
         {
             Title = CreateInput.Title,
@@ -46,23 +46,25 @@ public class IndexModel : PageModel
             Budget = CreateInput.Budget
         };
 
-        var result = await _mediator.Send(request);
-        
+        Result result = await _mediator.Send(request);
+
         if (!result.Succeeded)
         {
             ModelState.AddResult(result);
             Itineraries = await _mediator.Send(new GetItineraries());
             return Page();
         }
-        
+
         return RedirectToPage();
     }
-    
+
     public class CreateModel
     {
         [Required]
         public string? Title { get; set; }
+
         public string? Description { get; set; }
+
         [DataType(DataType.Currency)]
         public decimal? Budget { get; set; }
     }

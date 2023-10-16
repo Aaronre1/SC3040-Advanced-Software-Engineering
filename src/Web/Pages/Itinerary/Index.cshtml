@@ -1,6 +1,6 @@
 ﻿@page
-@using ASE3040.Web.Pages.Shared.Components.ConfirmationDialog
-@model ASE3040.Web.Pages.Itinerary.IndexModel
+@using ASE3040.Application.Features.Itineraries.Queries
+@model IndexModel
 @{
     ViewData["Title"] = "Your Itineraries";
     const string dateFormat = "dd MMM yyyy hh:mm tt";
@@ -21,7 +21,7 @@
     </div>
     <hr/>
     <div class="row row-cols-1 row-cols-sm-2 g-3">
-        @foreach (var item in Model.Itineraries)
+        @foreach (ItineraryDto item in Model.Itineraries)
         {
             <div class="col">
                 <div class="card shadow-sm">
@@ -29,7 +29,7 @@
                         <a class="h5" style="border-bottom: 2px dotted; text-decoration: none;" asp-page="Details" asp-route-id="@(item.Id.ToString())">
                             @Html.DisplayFor(x => item.Title)
                         </a>
-                        @if (item.From.HasValue && item.To.HasValue)
+                        @if (item is { From: not null,To: not null })
                         {
                             <div class="text-muted mt-2">
                                 <i class="far fa-calendar-alt fa-fw"></i>
@@ -66,69 +66,6 @@
         }
     </div>
 </div>
-@* <div class="card shadow mb-4"> *@
-@*     <div class="card-header py-3"> *@
-@*         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal">Create</button> *@
-@*     </div> *@
-@*     <div class="card-body"> *@
-@*         <div class="table-responsive"> *@
-@*             <table id="IndexTable" class="table table-bordered"> *@
-@*                 <thead> *@
-@*                 <tr> *@
-@*                     <th>#</th> *@
-@*                     <th>Title</th> *@
-@*                     <th>Start</th> *@
-@*                     <th>End</th> *@
-@*                     <th>Budget ($)</th> *@
-@*                     <th>Expenses ($)</th> *@
-@*                     <th>Modified</th> *@
-@*                     <th></th> *@
-@*                 </tr> *@
-@*                 </thead> *@
-@*                 <tbody> *@
-@*                 @foreach (var item in Model.Itineraries) *@
-@*                 { *@
-@*                     <tr> *@
-@*                         <td>@Html.DisplayFor(x => item.Id)</td> *@
-@*                         <td>@Html.DisplayFor(x => item.Title)</td> *@
-@*                         <td>@Html.DisplayFor(x => item.From)</td> *@
-@*                         <td>@Html.DisplayFor(x => item.To)</td> *@
-@*                         <td>@Html.DisplayFor(x => item.Budget)</td> *@
-@*                         <td>@Html.DisplayFor(x => item.Expenses)</td> *@
-@*                         <td>@Html.DisplayFor(x => item.LastModified)</td> *@
-@*                         <td class="text-center"> *@
-@*                             <div class="btn-toolbar flex-nowrap" role="toolbar"> *@
-@*                                 <div class="btn-group me-2" role="group"> *@
-@*                                     <a asp-page="Details" asp-route-id="@(item.Id.ToString())" class="btn border-0"> *@
-@*                                         <i class="fa fa-pen icon text-primary"></i> *@
-@*                                     </a> *@
-@*                                 </div> *@
-@*                                 <div class="btn-group me-2"> *@
-@*                                     <button class="btn border-0" type="button" role="button" data-bs-toggle="modal" data-bs-target="#confirmationDialog_@(item.Id.ToString())"> *@
-@*                                         <i class="fa fa-trash icon text-danger"></i> *@
-@*                                     </button> *@
-@*                                     @await Component.InvokeAsync("ConfirmationDialog", new ConfirmationDialogViewModel() *@
-@*                                            { *@
-@*                                                Id = item.Id.ToString(), *@
-@*                                                PageHandler = "delete", *@
-@*                                                Method = "post", *@
-@*                                                Message = $"Delete '{item.Title}' itinerary?", *@
-@*                                                RouteValues = *@
-@*                                                { *@
-@*                                                    { "Id", item.Id.ToString() } *@
-@*                                                } *@
-@*                                            }) *@
-@*                                 </div> *@
-@*                             </div> *@
-@*                         </td> *@
-@*                     </tr> *@
-@*                 } *@
-@*                 </tbody> *@
-@*             </table> *@
-@*         </div> *@
-@*     </div> *@
-@* </div> *@
-@* *@
 
 <div class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -163,7 +100,6 @@
     </div>
 </div>
 
-
 @section Scripts
 {
     @{
@@ -179,178 +115,3 @@
     });
     </script>
 }
-
-@* <!-- DataTales Example --> *@
-@* <div class="card shadow mb-4"> *@
-@*     <div class="card-header py-3"> *@
-@* *@
-@*         <h3>Create New Itinerary </h3> *@
-@*         <form> *@
-@*             <p> *@
-@*                 <label>Place : <input type="text"/></label> *@
-@*             </p> *@
-@*             <p> *@
-@*                 <label>Date : <input type="Date"/></label> *@
-@*             </p> *@
-@*             <p> *@
-@*                 <label>Time : <input type="Time"/></label> *@
-@*             </p> *@
-@*             <p> *@
-@*                 <label>Address : <input type="Address"/></label> *@
-@*             </p> *@
-@*             <p> *@
-@*                 <input type="submit" name="submit" value="Submit"/> *@
-@*             </p> *@
-@*         </form> *@
-@* *@
-@*     </div> *@
-@*     <div class="card-body"> *@
-@*         <div class="table-responsive"> *@
-@*             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"> *@
-@*                 <thead> *@
-@*                 <tr> *@
-@*                     <th>Place</th> *@
-@*                     <th>Date</th> *@
-@*                     <th>Time</th> *@
-@*                     <th>Address</th> *@
-@*                     <th>Changes</th> *@
-@* *@
-@*                 </tr> *@
-@*                 </thead> *@
-@*                 <tfoot> *@
-@*                 <tr> *@
-@*                     <th>Place</th> *@
-@*                     <th>Date</th> *@
-@*                     <th>Time</th> *@
-@*                     <th>Address</th> *@
-@*                     <th>Changes</th> *@
-@*                 </tr> *@
-@*                 </tfoot> *@
-@*                 <tbody> *@
-@*                 <tr> *@
-@*                     <td>Chinatown</td> *@
-@*                     <td>28 September 2023</td> *@
-@*                     <td>10 AM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/VWAT9BJciR25SLUn9">Chinatown Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Little India</td> *@
-@*                     <td>28 September 2023</td> *@
-@*                     <td>12 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/j8kPx4w32uEnFcYTA">Little India Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Orchard Road</td> *@
-@*                     <td>28 September 2023</td> *@
-@*                     <td>3 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/5Sq81tumtxUdd3PH9">Orchard Road Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Sentosa</td> *@
-@*                     <td>28 September 2023</td> *@
-@*                     <td>5 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Sentosa Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Marina Bay Sands</td> *@
-@*                     <td>29 September 2023</td> *@
-@*                     <td>10 AM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Marina Bay Sands Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Gardens By the Bay</td> *@
-@*                     <td>29 September 2023</td> *@
-@*                     <td>12 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Gardens By the Bay Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Lau Pa Sat</td> *@
-@*                     <td>29 September 2023</td> *@
-@*                     <td>1 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Lau Pa Sat Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Marina Barradge</td> *@
-@*                     <td>29 September 2023</td> *@
-@*                     <td>2 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Marina Barradge Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>East Coast Park</td> *@
-@*                     <td>30 September 2023</td> *@
-@*                     <td>10 AM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">East Coast Park Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Katong Road</td> *@
-@*                     <td>30 September 2023</td> *@
-@*                     <td>12 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Katong Road Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@*                 <tr> *@
-@*                     <td>Jewel</td> *@
-@*                     <td>30 September 2023</td> *@
-@*                     <td>2 PM</td> *@
-@*                     <td> *@
-@*                         <a href="https://maps.app.goo.gl/jjkHxPW6vNw2BS9k6">Jewel Address</a> *@
-@*                     </td> *@
-@*                     <td style="text-align: center;"> *@
-@*                         <i class="fa fa-pen icon"></i> | <i class="fa fa-trash icon"></i> *@
-@*                     </td> *@
-@*                 </tr> *@
-@* *@
-@*                 </tbody> *@
-@*             </table> *@
-@*         </div> *@
-@*     </div> *@
-@* </div> *@
