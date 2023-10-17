@@ -6,12 +6,13 @@ using ASE3040.Application.Features.Itineraries.Commands.Edit;
 using ASE3040.Application.Features.Itineraries.Queries;
 using ASE3040.Web.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.Differencing;
 
 namespace ASE3040.Web.Pages.Itinerary;
 
+[Authorize]
 public class Details : PageModel
 {
     private readonly ISender _mediator;
