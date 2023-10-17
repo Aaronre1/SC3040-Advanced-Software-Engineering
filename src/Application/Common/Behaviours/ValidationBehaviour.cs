@@ -35,7 +35,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
                     var response = (TResponse)Activator.CreateInstance(
                         typeof(TResponse),
                         false,
-                        failures.Select(x => x.ErrorMessage));
+                        failures.Select(x => x.ErrorMessage))!;
                     return response;
                 }
                 throw new ValidationException(failures);
