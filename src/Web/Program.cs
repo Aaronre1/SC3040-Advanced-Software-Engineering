@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration)
     .AddApplicationServices()
     .AddWebServices(builder.Configuration);
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -24,7 +24,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-await app.InitialiseDatabaseAsync();
+if (!app.Environment.EnvironmentName.Equals("Testing"))
+{
+    await app.InitialiseDatabaseAsync();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -38,6 +41,7 @@ app.MapRazorPages();
 
 app.Run();
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public partial class Program
 {
 }
