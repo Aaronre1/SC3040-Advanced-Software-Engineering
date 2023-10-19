@@ -5,20 +5,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.FunctionalTests;
+
 [TestClass]
 public class Testing
 {
     private static string? _userId;
     private static CustomWebApplicationFactory _factory;
     private static IServiceScopeFactory _scopeFactory;
-    
+
     static Testing()
     {
         _factory = new CustomWebApplicationFactory();
         _factory.Services.GetRequiredService<ApplicationDbContext>().Database.EnsureCreated();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
     }
-    
+
     public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
     {
         using IServiceScope scope = _scopeFactory.CreateScope();
@@ -57,7 +58,7 @@ public class Testing
 
         return await context.FindAsync<TEntity>(keyValues);
     }
-    
+
     public static async Task<TEntity?> FindAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
         where TEntity : class
     {
@@ -67,11 +68,11 @@ public class Testing
 
         return await context.Set<TEntity>().FirstOrDefaultAsync(predicate);
     }
-    
+
     public static async Task AddAsync<TEntity>(TEntity entity)
         where TEntity : class
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
 
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -82,11 +83,20 @@ public class Testing
 
     public static async Task<int> CountAsync<TEntity>() where TEntity : class
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
 
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         return await context.Set<TEntity>().CountAsync();
     }
-    
+
+    public static async Task ResetAsync()
+    {
+        using IServiceScope scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        await context.Database.EnsureDeletedAsync();
+        await context.Database.EnsureCreatedAsync();
+    }
 }

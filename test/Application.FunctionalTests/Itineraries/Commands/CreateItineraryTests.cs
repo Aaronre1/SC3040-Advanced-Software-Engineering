@@ -7,7 +7,7 @@ namespace Application.FunctionalTests.Itineraries.Commands;
 using static Testing;
 
 [TestClass]
-public class CreateItineraryTests
+public class CreateItineraryTests : BaseTestClass
 {
     [TestMethod]
     public async Task ShouldRequireMinimumFields()
