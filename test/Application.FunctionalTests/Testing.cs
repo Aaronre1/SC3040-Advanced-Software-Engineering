@@ -48,6 +48,12 @@ public class Testing
         _userId = "test-user-id";
         return _userId;
     }
+    
+    public static string RunAsAnotherUser()
+    {
+        _userId = "test-user-id2";
+        return _userId;
+    }
 
     public static async Task<TEntity?> FindAsync<TEntity>(params object[] keyValues)
         where TEntity : class

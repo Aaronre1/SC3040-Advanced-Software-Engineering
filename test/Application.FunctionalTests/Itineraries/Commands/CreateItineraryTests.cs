@@ -37,10 +37,10 @@ public class CreateItineraryTests : BaseTestClass
             Title = "Japan Trip"
         };
 
-        Result resul = await SendAsync(command);
+        Result result = await SendAsync(command);
 
-        Assert.IsFalse(resul.Succeeded);
-        Assert.IsTrue(resul.Errors.Any());
+        Assert.IsFalse(result.Succeeded);
+        Assert.IsTrue(result.Errors.Any());
     }
 
     [TestMethod]
