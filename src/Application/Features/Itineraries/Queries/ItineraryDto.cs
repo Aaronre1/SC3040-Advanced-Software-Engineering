@@ -21,7 +21,9 @@ public class ItineraryDto
     {
         public Mapping()
         {
-            CreateMap<Domain.Entities.Itinerary, ItineraryDto>();
+            CreateMap<Domain.Entities.Itinerary, ItineraryDto>()
+                .ForMember(x => x.Expenses,
+                    opt => opt.MapFrom(src => src.Activities.Select(x => x.Cost).DefaultIfEmpty().Sum()));
         }
     }
 }

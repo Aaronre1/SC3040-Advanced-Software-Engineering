@@ -50,7 +50,9 @@ public class CreateItineraryTests : BaseTestClass
 
         var command = new CreateItineraryCommand()
         {
-            Title = "Japan Trip"
+            Title = "Japan Trip",
+            Budget = 1000M,
+            Description = "A trip to Japan"
         };
 
         Result result = await SendAsync(command);
@@ -61,5 +63,7 @@ public class CreateItineraryTests : BaseTestClass
         entity.Should().NotBeNull();
         entity!.CreatedBy.Should().Be(GetUserId());
         entity.Created.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));
+        entity.Budget.Should().Be(1000M);
+        entity.Description.Should().Be("A trip to Japan");
     }
 }

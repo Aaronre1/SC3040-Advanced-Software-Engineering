@@ -4,7 +4,7 @@ using ASE3040.Application.Common.Security;
 using MediatR;
 using Moq;
 
-namespace ASE3040.Application.Tests.Common.Behaviours
+namespace Application.FunctionalTests.Authorization
 {
     [TestClass]
     public class AuthorizationBehaviourTests
@@ -13,7 +13,6 @@ namespace ASE3040.Application.Tests.Common.Behaviours
         [TestMethod]
         public async Task ShouldNotThrowExceptionIfAuthorized()
         {
-            
             var userMock = new Mock<IUser>();
             userMock.Setup(u => u.UserId).Returns("user-123");
 
@@ -22,7 +21,6 @@ namespace ASE3040.Application.Tests.Common.Behaviours
             var next = new RequestHandlerDelegate<Unit>(() => Task.FromResult(Unit.Value));
             
             await behaviour.Handle(request, next, CancellationToken.None);
-            
         }
 
         [TestMethod]

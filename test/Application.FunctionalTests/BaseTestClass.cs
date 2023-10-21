@@ -1,4 +1,4 @@
-namespace Application.FunctionalTests.Itineraries;
+namespace Application.FunctionalTests;
 
 using static Testing;
 

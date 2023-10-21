@@ -1,11 +1,11 @@
 ﻿using ASE3040.Application.Common.Interfaces;
 using ASE3040.Application.Features.Itineraries.Queries.Calendar;
 using ASE3040.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using ASE3040.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Application.FunctionalTests.Itineraries.Queries
+namespace Application.FunctionalTests.Itineraries.Queries.Calendar
 {
     [TestClass]
     public class GetItinerariesCalendarEventsTests

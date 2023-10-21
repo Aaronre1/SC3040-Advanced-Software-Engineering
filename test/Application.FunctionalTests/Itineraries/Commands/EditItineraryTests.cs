@@ -8,7 +8,7 @@ namespace Application.FunctionalTests.Itineraries.Commands
     using static Testing;
 
     [TestClass]
-    public class EditItineraryTests
+    public class EditItineraryTests : BaseTestClass
     {
         [TestMethod]
         public async Task ShouldRequireUniqueTitle()
@@ -34,7 +34,6 @@ namespace Application.FunctionalTests.Itineraries.Commands
         [TestMethod]
         public async Task ShouldRequireTitle()
         {
-
             RunAsDefaultUser();
             var createdItinerary = await CreateItineraryForTest("Original Title");
 
@@ -90,9 +89,58 @@ namespace Application.FunctionalTests.Itineraries.Commands
             Assert.IsTrue(result.Errors.Contains("'Budget' must be greater than '0'."));
         }
 
+        [TestMethod]
+        public async Task ShouldUpdateItinerary()
+        {
+            RunAsDefaultUser();
+            await AddAsync(new Itinerary()
+            {
+                Title = "Japan Trip",
+                Budget = 1000M,
+                Description = "A trip to Japan"
+            });
+            
+            var command = new EditItineraryCommand()
+            {
+                Id = 1,
+                Title = "Japan Trip 2023",
+                Budget = 2000M,
+                Description = "A trip to Japan 2030"
+            };
+            
+            Result result = await SendAsync(command);
+            var entity = await FindAsync<Itinerary>(x => x.Title == "Japan Trip 2023");
+            
+            Assert.IsTrue(result.Succeeded);
+            entity.Should().NotBeNull();
+            entity!.CreatedBy.Should().Be(GetUserId());
+            entity.LastModified.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));
+            entity.Budget.Should().Be(2000M);
+            entity.Description.Should().Be("A trip to Japan 2030");
+        }
+
+        [TestMethod]
+        public async Task ShouldFailIfNotFound()
+        {
+            RunAsDefaultUser();
+            var command = new EditItineraryCommand()
+            {
+                Id = 1000,
+                Title = "Japan Trip 2023",
+            };
+            
+            Result result = await SendAsync(command);
+            
+            result.Succeeded.Should().BeFalse();
+            result.Errors.Should().Contain("Itinerary not found.");
+        }
+
         private async Task<Itinerary> CreateItineraryForTest(string title)
         {
-            var command = new CreateItineraryCommand { Title = title };
+            var command = new CreateItineraryCommand
+            {
+                Title = title,
+            };
             await SendAsync(command);
             return await FindAsync<Itinerary>(i => i.Title == title);
         }
