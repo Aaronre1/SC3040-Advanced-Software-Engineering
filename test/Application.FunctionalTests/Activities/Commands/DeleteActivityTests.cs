@@ -1,69 +1,65 @@
 ﻿using ASE3040.Application.Common.Models;
-using ASE3040.Application.Features.Activities.Commands.Create;
 using ASE3040.Application.Features.Activities.Commands.Delete;
 using ASE3040.Domain.Entities;
-using ASE3040.Application.Features.Itineraries.Commands.Create;
 
-namespace Application.FunctionalTests.Activities.Commands
+namespace Application.FunctionalTests.Activities.Commands;
+
+using static Testing;
+
+[TestClass]
+public class DeleteActivityTests : BaseTestClass
 {
-    using static Testing;
-
-    [TestClass]
-    public class DeleteActivityTests
+    [TestMethod]
+    public async Task ShouldDeleteActivity()
     {
-        [TestMethod]
-        public async Task ShouldDeleteActivity()
-        {
-            RunAsDefaultUser();
-            var createdItinerary = await CreateItineraryForTest("Original Title");
-            var createdActivity = await CreateActivityForTest(createdItinerary.Id, "Activity Title");
+        RunAsDefaultUser();
 
-            var command = new DeleteActivityCommand
+        await AddAsync(new Itinerary
+        {
+            Id = 1,
+            Title = "Title",
+            Budget = 1000.0m,
+            Description = "Description",
+            Activities = new List<Activity>
             {
-                Id = createdActivity.Id,
-            };
-            
-            Result result = await SendAsync(command);
-            
-            Assert.IsTrue(result.Succeeded);
-            var activity = await FindAsync<Activity>(a => a.Id == createdActivity.Id);
-            Assert.IsNull(activity);
-        }
+                new()
+                {
+                    Id = 1,
+                    Title = "Activity Title",
+                    Description = "Activity Description",
+                    DateTime = new DateTime(2023, 01, 01),
+                    Cost = 50.0m,
+                }
+            }
+        });
 
-        [TestMethod]
-        public async Task ShouldRequireValidId()
+        var command = new DeleteActivityCommand
         {
-            RunAsDefaultUser();
+            Id = 1,
+        };
 
-            var command = new DeleteActivityCommand
-            {
-                Id = 9999, // Invalid Id
-            };
-            
-            Result result = await SendAsync(command);
-            
-            Assert.IsFalse(result.Succeeded);
-            Assert.IsTrue(result.Errors.Any());
-            Assert.IsTrue(result.Errors.Contains("Itinerary not found."));
-        }
+        Result result = await SendAsync(command);
+        var activity = await FindAsync<Activity>(a => a.Id == 1);
 
-        private async Task<Itinerary> CreateItineraryForTest(string title)
+        result.Succeeded.Should().BeTrue();
+        result.Errors.Should().BeEmpty();
+        activity.Should().BeNull();
+    }
+
+    [TestMethod]
+    public async Task ShouldRequireValidId()
+    {
+        RunAsDefaultUser();
+
+        var command = new DeleteActivityCommand
         {
-            var command = new CreateItineraryCommand { Title = title };
-            await SendAsync(command);
-            return await FindAsync<Itinerary>(i => i.Title == title);
-        }
+            Id = 0, // Invalid Id
+        };
 
-        private async Task<Activity> CreateActivityForTest(int itineraryId, string title)
-        {
-            var command = new CreateActivityCommand
-            {
-                ItineraryId = itineraryId,
-                Title = title,
-                DateTime = DateTime.Now.AddDays(1)
-            };
-            await SendAsync(command);
-            return await FindAsync<Activity>(a => a.Title == title);
-        }
+        Result result = await SendAsync(command);
+
+        result.Succeeded.Should().BeFalse();
+        result.Errors.Should().NotBeEmpty();
+        result.Errors.Should().Contain("Activity not found.");
     }
 }

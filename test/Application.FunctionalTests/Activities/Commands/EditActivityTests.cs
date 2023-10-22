@@ -1,42 +1,63 @@
 ﻿using ASE3040.Application.Common.Models;
-using ASE3040.Application.Features.Activities.Commands.Create;
 using ASE3040.Application.Features.Activities.Commands.Edit;
 using ASE3040.Domain.Entities;
-using ASE3040.Application.Features.Itineraries.Commands.Create;
 
 namespace Application.FunctionalTests.Activities.Commands
 {
     using static Testing;
 
     [TestClass]
-    public class EditActivityTests
+    public class EditActivityTests : BaseTestClass
     {
         [TestMethod]
-        public async Task ShouldEditActivity()
+        public async Task ShouldRequireMinimumFields()
         {
             RunAsDefaultUser();
-            var createdItinerary = await CreateItineraryForTest("Original Title");
-            var createdActivity = await CreateActivityForTest(createdItinerary.Id, "Activity Title");
+            var command = new EditActivityCommand();
 
-            var command = new EditActivityCommand
+            Result result = await SendAsync(command);
+
+            result.Succeeded.Should().BeFalse();
+            result.Errors.Should().NotBeEmpty();
+        }
+
+        [TestMethod]
+        public async Task ShouldHavePositiveCost()
+        {
+            RunAsDefaultUser();
+            await AddAsync(new Itinerary
             {
-                Id = createdActivity.Id,
-                Title = "New Title",
-                Description = "New Description",
-                DateTime = DateTime.Now.AddDays(2),
-                Cost = 100.50m,
-                Done = true
+                Id = 1,
+                Title = "Title",
+                Budget = 1000.0m,
+                Description = "Description",
+                Activities = new List<Activity>
+                {
+                    new()
+                    {
+                        Id = 1,
+                        Title = "Activity Title",
+                        Description = "Activity Description",
+                        DateTime = new DateTime(2023, 01, 01),
+                        Cost = 50.0m
+                    }
+                }
+            });
+
+            var command = new EditActivityCommand()
+            {
+                Id = 1,
+                Title = "Activity Title",
+                Description = "Activity Description",
+                DateTime = new DateTime(2023, 01, 01),
+                Cost = -50.0m
             };
 
             Result result = await SendAsync(command);
-            
-            Assert.IsTrue(result.Succeeded);
-            var activity = await FindAsync<Activity>(a => a.Id == createdActivity.Id);
-            Assert.IsNotNull(activity);
-            Assert.AreEqual("New Title", activity.Title);
-            Assert.AreEqual("New Description", activity.Description);
-            Assert.AreEqual(100.50m, activity.Cost);
-            Assert.IsTrue(activity.Done);
+
+            result.Succeeded.Should().BeFalse();
+            result.Errors.Should().NotBeEmpty();
+            result.Errors.Should().Contain("'Cost' must be greater than '0'.");
         }
 
         [TestMethod]
@@ -46,38 +67,64 @@ namespace Application.FunctionalTests.Activities.Commands
 
             var command = new EditActivityCommand
             {
-                Id = 9999, // Invalid Id
+                Id = 0, // Invalid Id
                 Title = "New Title",
                 Description = "New Description",
                 DateTime = DateTime.Now.AddDays(2),
                 Cost = 100.50m,
                 Done = true
             };
-            
+
             Result result = await SendAsync(command);
-            
-            Assert.IsFalse(result.Succeeded);
-            Assert.IsTrue(result.Errors.Any());
-            Assert.IsTrue(result.Errors.Contains("Activity not found."));
+
+            result.Succeeded.Should().BeFalse();
+            result.Errors.Should().NotBeEmpty();
+            result.Errors.Should().Contain("Activity not found.");
         }
 
-        private async Task<Itinerary> CreateItineraryForTest(string title)
+        [TestMethod]
+        public async Task ShouldEditActivity()
         {
-            var command = new CreateItineraryCommand { Title = title };
-            await SendAsync(command);
-            return await FindAsync<Itinerary>(i => i.Title == title);
-        }
+            RunAsDefaultUser();
 
-        private async Task<Activity> CreateActivityForTest(int itineraryId, string title)
-        {
-           var command = new CreateActivityCommand
+            await AddAsync(new Itinerary
             {
-                ItineraryId = itineraryId,
-                Title = title,
-                DateTime = DateTime.Now.AddDays(1)
+                Title = "Title",
+                Budget = 1000.0m,
+                Description = "Description",
+                Activities = new List<Activity>()
+                {
+                    new()
+                    {
+                        Id = 1,
+                        Title = "Activity Title",
+                        Description = "Activity Description",
+                        DateTime = new DateTime(2023, 01, 01),
+                        Cost = 50.0m
+                    }
+                }
+            });
+
+            var command = new EditActivityCommand
+            {
+                Id = 1,
+                Title = "New Title",
+                Description = "New Description",
+                DateTime = new DateTime(2023, 01, 02),
+                Cost = 100m,
+                Done = true
             };
-            await SendAsync(command);
-            return await FindAsync<Activity>(a => a.Title == title);
+
+            Result result = await SendAsync(command);
+            var activity = await FindAsync<Activity>(a => a.Id == 1);
+
+            result.Succeeded.Should().BeTrue();
+            activity!.Title.Should().Be("New Title");
+            activity.Description.Should().Be("New Description");
+            activity.DateTime.Should().Be(new DateTime(2023, 01, 02));
+            activity.Cost.Should().Be(100m);
+            activity.Done.Should().BeTrue();
+            activity.LastModified.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));
         }
     }
 }

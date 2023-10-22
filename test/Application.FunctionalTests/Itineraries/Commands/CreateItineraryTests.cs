@@ -13,13 +13,12 @@ public class CreateItineraryTests : BaseTestClass
     public async Task ShouldRequireMinimumFields()
     {
         RunAsDefaultUser();
-
         var command = new CreateItineraryCommand();
 
         Result result = await SendAsync(command);
 
-        Assert.IsFalse(result.Succeeded);
-        Assert.IsTrue(result.Errors.Any());
+        result.Succeeded.Should().BeFalse();
+        result.Errors.Should().NotBeEmpty();
     }
 
     [TestMethod]
@@ -39,8 +38,8 @@ public class CreateItineraryTests : BaseTestClass
 
         Result result = await SendAsync(command);
 
-        Assert.IsFalse(result.Succeeded);
-        Assert.IsTrue(result.Errors.Any());
+        result.Succeeded.Should().BeFalse();
+        result.Errors.Should().NotBeEmpty();
     }
 
     [TestMethod]
@@ -59,7 +58,7 @@ public class CreateItineraryTests : BaseTestClass
 
         var entity = await FindAsync<Itinerary>(x => x.Title == "Japan Trip");
 
-        Assert.IsTrue(result.Succeeded);
+        result.Succeeded.Should().BeTrue();
         entity.Should().NotBeNull();
         entity!.CreatedBy.Should().Be(GetUserId());
         entity.Created.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(10000));

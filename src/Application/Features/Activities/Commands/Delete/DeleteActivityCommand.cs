@@ -29,7 +29,7 @@ public class DeleteActivityCommandHandler : IRequestHandler<DeleteActivityComman
 
         if (entity == null)
         {
-            return Result.Failure(new[] { "Itinerary not found." });
+            return Result.Failure(new[] { "Activity not found." });
         }
 
         _context.Activities.Remove(entity);

@@ -1,104 +1,102 @@
-﻿using ASE3040.Application.Features.Activities.Commands.Create;
-using ASE3040.Application.Common.Models;
-using ASE3040.Application.Features.Itineraries.Commands.Create;
+﻿using ASE3040.Application.Common.Models;
+using ASE3040.Application.Features.Activities.Commands.Create;
 using ASE3040.Domain.Entities;
 
-namespace Application.FunctionalTests.Activities.Commands
+namespace Application.FunctionalTests.Activities.Commands;
+
+using static Testing;
+
+[TestClass]
+public class CreateActivityTests : BaseTestClass
 {
-    using static Testing;
-
-    [TestClass]
-    public class CreateActivityTests
+    [TestMethod]
+    public async Task ShouldRequireMinimumFields()
     {
-        [TestMethod]
-        public async Task ShouldCreateActivity()
+        RunAsDefaultUser();
+        var command = new CreateActivityCommand();
+
+        Result result = await SendAsync(command);
+
+        result.Succeeded.Should().BeFalse();
+        result.Errors.Should().NotBeEmpty();
+    }
+
+    [TestMethod]
+    public async Task ShouldRequireValidItineraryId()
+    {
+        RunAsDefaultUser();
+        var command = new CreateActivityCommand
         {
-            RunAsDefaultUser();
-            var createdItinerary = await CreateItineraryForTest("Original Title");
+            ItineraryId = 0, // Invalid ItineraryId
+            Title = "Activity Title",
+            Description = "Activity Description",
+            DateTime = DateTime.Now.AddDays(1),
+            Cost = 50.0m
+        };
 
-            var command = new CreateActivityCommand
-            {
-                ItineraryId = createdItinerary.Id,
-                Title = "Activity Title",
-                Description = "Activity Description",
-                DateTime = DateTime.Now.AddDays(1),
-                Cost = 50.0m
-            };
-            
-            Result result = await SendAsync(command);
-            
-            Assert.IsTrue(result.Succeeded);
-            var activity = await FindAsync<Activity>(a => a.Title == "Activity Title");
-            Assert.IsNotNull(activity);
-        }
+        Result result = await SendAsync(command);
 
-        [TestMethod]
-        public async Task ShouldRequireValidItineraryId()
+        result.Succeeded.Should().BeFalse();
+        result.Errors.Should().NotBeEmpty();
+        result.Errors.Should().Contain("Itinerary is not found.");
+    }
+
+    [TestMethod]
+    public async Task ShouldCreateActivity()
+    {
+        RunAsDefaultUser();
+        await AddAsync(new Itinerary
         {
-            RunAsDefaultUser();
+            Id = 1,
+            Title = "Title",
+            Budget = 1000.0m,
+            Description = "Description"
+        });
 
-            var command = new CreateActivityCommand
-            {
-                ItineraryId = 0, // Invalid ItineraryId
-                Title = "Activity Title",
-                Description = "Activity Description",
-                DateTime = DateTime.Now.AddDays(1),
-                Cost = 50.0m
-            };
-            
-            Result result = await SendAsync(command);
-            
-            Assert.IsFalse(result.Succeeded);
-            Assert.IsTrue(result.Errors.Any());
-            Assert.IsTrue(result.Errors.Contains("Itinerary is not found."));
-        }
-
-        [TestMethod]
-        public async Task ShouldValidateRequiredFields()
+        var command = new CreateActivityCommand
         {
-            RunAsDefaultUser();
-            var createdItinerary = await CreateItineraryForTest("Original Title");
+            ItineraryId = 1,
+            Title = "Activity Title",
+            Description = "Activity Description",
+            DateTime = DateTime.Now.AddDays(1),
+            Cost = 50.0m
+        };
 
-            var command = new CreateActivityCommand
-            {
-                ItineraryId = createdItinerary.Id
-                // Missing required fields: Title and DateTime
-            };
-            
-            Result result = await SendAsync(command);
-            
-            Assert.IsFalse(result.Succeeded);
-            Assert.IsTrue(result.Errors.Any());
-            //Assert.IsTrue(result.Errors.Contains("The Title field is required."));
-            //Assert.IsTrue(result.Errors.Contains("The DateTime field is required."));
-        }
+        Result result = await SendAsync(command);
+        var activity = await FindAsync<Activity>(a => a.Title == "Activity Title");
 
-        [TestMethod]
-        public async Task ShouldValidateCost()
+        result.Succeeded.Should().BeTrue();
+        activity!.Description.Should().Be("Activity Description");
+        activity.DateTime.Should().Be(command.DateTime);
+        activity.Cost.Should().Be(command.Cost);
+        activity.ItineraryId.Should().Be(command.ItineraryId);
+        activity.CreatedBy.Should().Be(GetUserId());
+    }
+
+    [TestMethod]
+    public async Task ShouldNotHaveNegativeCost()
+    {
+        RunAsDefaultUser();
+        await AddAsync(new Itinerary
         {
-            RunAsDefaultUser();
-            var createdItinerary = await CreateItineraryForTest("Original Title");
+            Id = 1,
+            Title = "Title",
+            Budget = 1000.0m,
+            Description = "Description"
+        });
 
-            var command = new CreateActivityCommand
-            {
-                ItineraryId = createdItinerary.Id,
-                Title = "Activity Title",
-                DateTime = DateTime.Now.AddDays(1),
-                Cost = -50.0m // Negative cost
-            };
-            
-            Result result = await SendAsync(command);
-            
-            Assert.IsFalse(result.Succeeded);
-            Assert.IsTrue(result.Errors.Any());
-            Assert.IsTrue(result.Errors.Contains("'Cost' must be greater than '0'."));
-        }
-
-        private async Task<Itinerary> CreateItineraryForTest(string title)
+        var command = new CreateActivityCommand
         {
-            var command = new CreateItineraryCommand { Title = title };
-            await SendAsync(command);
-            return await FindAsync<Itinerary>(i => i.Title == title);
-        }
+            ItineraryId = 1,
+            Title = "Activity Title",
+            DateTime = DateTime.Now.AddDays(1),
+            Cost = -50.0m // Negative cost
+        };
+
+        Result result = await SendAsync(command);
+
+        result.Succeeded.Should().BeFalse();
+        result.Errors.Should().NotBeEmpty();
+        result.Errors.Should().Contain("'Cost' must be greater than '0'.");
     }
 }
