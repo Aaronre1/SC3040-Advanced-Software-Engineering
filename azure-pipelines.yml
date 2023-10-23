@@ -32,7 +32,9 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
+- task: PublishCodeCoverageResults@2
+  inputs:
+    summaryFileLocation: 'D:\a\_temp\TestResults'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
