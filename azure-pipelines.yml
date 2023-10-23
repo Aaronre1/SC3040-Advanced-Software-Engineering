@@ -34,7 +34,7 @@ steps:
     configuration: '$(buildConfiguration)'
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: 'D:\a\_temp\TestResults'
+    summaryFileLocation: '**/*.trx'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
