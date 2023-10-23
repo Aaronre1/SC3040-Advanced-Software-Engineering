@@ -32,10 +32,8 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    codeCoverageEnabled: True
-- task: PublishCodeCoverageResults@2
-  inputs:
-    summaryFileLocation: '$(Agent.TempDirectory)\TestResults'
+    codeCoverageEnabled: true
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
